@@ -1,15 +1,15 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                  public.role_permissions                   --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Custom Claims & Role-based Access Control (RBAC)
 -- https://supabase.com/docs/guides/auth/custom-claims-and-role-based-access-control-rbac
 
 drop table if exists role_permissions;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table role_permissions (

@@ -1,0 +1,49 @@
+# Changelog
+
+## Homepage Redesign
+
+### Hero Section
+1. Removed initial placeholder content
+2. Added centered hero layout with two-part heading "Know Your Brain. Own Your Story."
+3. Initially attempted animated brain visualization using Canvas
+4. Replaced animation with static brain tractography image (`/assets/images/main/tracts.png`)
+5. Positioned image to the right with gradient fade to white
+6. Removed "Neural Insights" badge from hero section
+7. Updated hero text and CTA buttons
+
+### Color Scheme
+1. Simplified color palette to monochrome
+2. Replaced brand colors:
+   - `#332B2C` → `black`
+   - `#68C9B2` → `black`
+   - `#745656` → `text-gray-600`
+3. Updated hover states to use opacity variations (e.g., `hover:bg-black/90`)
+4. Updated all buttons to use black/white scheme
+
+### Navigation
+1. Increased menu text size and spacing
+2. Updated navigation links to use monochrome scheme
+3. Added hover effects with opacity
+4. Improved header spacing and layout
+
+### New Section
+1. Added "Actionable Insights" section with:
+   - Three-column card layout
+   - Icons for each feature (Brain, Sparkles, Check)
+   - CTA button for example insights
+   - Consistent monochrome styling
+
+### Layout & Structure
+1. Reordered sections:
+   - Hero
+   - The Science of You
+   - Actionable Insights
+   - How it Works
+   - CTA Section
+   - Trust Section
+
+### Technical Improvements
+1. Improved image loading with Next.js Image component
+2. Added proper gradient overlay for text readability
+3. Implemented responsive design considerations
+4. Maintained consistent spacing and typography throughout

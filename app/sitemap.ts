@@ -10,11 +10,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 1,
     },
-    {
-      url: BASE_URL + '/posts',
-      lastModified: new Date().toISOString(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
+    // {
+    //   url: BASE_URL + '/posts',
+    //   lastModified: new Date().toISOString(),
+    //   changeFrequency: 'weekly',
+    //   priority: 0.8,
+    // },
   ]
 }

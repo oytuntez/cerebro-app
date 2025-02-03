@@ -8,10 +8,10 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'NextJS supabase dashboard',
-  title: 'NextJS supabase dashboard',
+  name: 'Cerebro',
+  title: 'Cerebro',
   description:
-    'This is a dashboard starter template for the NextJS 14 app router using supabase based on shadcn-ui.',
+    'Cerebro is a platform that helps you understand your brain.',
   symbol: 'Activity', // LucideIcon
 }
 

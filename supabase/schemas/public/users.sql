@@ -1,13 +1,13 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                        public.users                        --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- User Management
 -- https://supabase.com/docs/guides/auth/managing-user-data
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- drop type if exists public.type_name;
 -- create type public.type_name as enum ('type_value', 'type_value');
@@ -15,12 +15,12 @@
 -- alter type public.type_name rename value 'old_type' to 'new_type';
 -- alter type public.type_name rename to new_type_name;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Functions for tracking last modification time
 create extension if not exists moddatetime schema extensions;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop trigger if exists on_updated_at on users;
 drop trigger if exists on_username_updated on users;
@@ -36,7 +36,7 @@ drop function if exists get_users;
 
 drop table if exists users;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table users (
@@ -89,7 +89,7 @@ create policy "User can delete their own users" on users for delete to authentic
 create trigger on_updated_at before update on users
   for each row execute procedure moddatetime (updated_at);
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function handle_username_changed_at()
 returns trigger
@@ -115,7 +115,7 @@ $$ language plpgsql;
 create trigger on_username_updated after update of username on users
   for each row execute function handle_username_changed_at();
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function handle_role_changed_at()
 returns trigger
@@ -130,7 +130,7 @@ $$ language plpgsql;
 create trigger on_role_updated after update of role on users
   for each row execute function handle_role_changed_at();
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function handle_plan_changed_at()
 returns trigger
@@ -145,7 +145,7 @@ $$ language plpgsql;
 create trigger on_plan_updated after update of plan on users
   for each row execute function handle_plan_changed_at();
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_user_role(userrole text, userid uuid = null, useremail text = null)
 returns void
@@ -162,7 +162,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_user_plan(userplan text, userid uuid = null, useremail text = null)
 returns void
@@ -179,7 +179,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function get_users(userrole text = null, userplan text = null)
 returns setof users

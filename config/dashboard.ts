@@ -128,5 +128,12 @@ export const dashboardConfig: DashboardConfig = {
       separator: true,
       roles: ['admin', 'superadmin'],
     },
+    {
+      id: 9,
+      href: '/dashboard/animations',
+      text: 'animations',
+      translate: 'yes',
+      iconName: 'Film',
+    },
   ],
 }

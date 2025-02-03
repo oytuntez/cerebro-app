@@ -1,124 +1,42 @@
 'use client'
 
 import * as React from 'react'
-import { useTranslation } from 'react-i18next'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-
-import { LucideIcon } from '@/lib/lucide-icon'
-import { Button } from '@/components/ui/button'
-import {
-  SheetTrigger,
-  SheetContent,
-  Sheet,
-  SheetTitle,
-  SheetDescription,
-} from '@/components/ui/sheet'
-import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
-
+import Link from 'next/link'
 import { SiteBrand } from '@/components/site-brand'
-import { Navigation } from '@/components/navigation'
-import { MobileNavigation } from '@/components/mobile-navigation'
-import { AccountMenu } from '@/components/account-menu'
-import { SearchForm } from '@/components/search-form'
-import { SearchFormDialog } from '@/components/search-form-dialog'
+import { Button } from '@/components/ui/button'
+import { AccountMenu } from './account-menu'
 
-import { cn } from '@/lib/utils'
-import { useAuth } from '@/hooks/use-auth'
-
-interface HeaderProps extends React.HTMLAttributes<HTMLElement> {}
-
-const Header = ({ className, ...props }: HeaderProps) => {
-  const searchParams = useSearchParams()
-  const pathname = usePathname()
-  const { user } = useAuth()
-
+export function Header() {
   return (
-    <Sheet>
-      <VisuallyHidden.Root>
-        <SheetTitle>Sheet Content</SheetTitle>
-        <SheetDescription>
-          This is a hidden description for screen readers.
-        </SheetDescription>
-      </VisuallyHidden.Root>
-      <SheetContent className="bg-white dark:bg-gray-900" side="left">
-        <MobileNavigation />
-      </SheetContent>
-      <header
-        className={
-          (cn(
-            'flex w-full flex-col border-0 border-b border-solid border-input'
-            // 'sticky left-0 top-0 z-10'
-          ),
-          className)
-        }
-        {...props}
-      >
-        <div className="container flex h-[60px] items-center">
-          <SheetTrigger asChild>
-            <Button
-              type="button"
-              className="md:hidden"
-              size="icon"
-              variant="outline"
-            >
-              <LucideIcon name="Menu" className="size-6 min-w-6" />
-              <span className="sr-only">Toggle navigation menu</span>
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
+      <div className="container flex h-16 items-center justify-between">
+        {/* Left side - Brand */}
+        <SiteBrand />
+
+        {/* Right side - Navigation + Account */}
+        <div className="flex items-center gap-8">
+          {/* Marketing Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link href="#your-brain" className="text-sm font-medium text-gray-600 hover:text-black">
+              Your Brain
+            </Link>
+            <Link href="#how-it-works" className="text-sm font-medium text-gray-600 hover:text-black">
+              How it Works
+            </Link>
+            <Link href="#science" className="text-sm font-medium text-gray-600 hover:text-black">
+              Science
+            </Link>
+          </nav>
+
+          {/* Account Section */}
+          <div className="flex items-center gap-2">
+            <Button variant="default" className="bg-black text-white hover:bg-black/90">
+              Dashboard
             </Button>
-          </SheetTrigger>
-          <SiteBrand className="mr-6 hidden md:flex" />
-          <Navigation />
-          <div className="ml-auto flex gap-2">
-            {pathname !== '/' ? (
-              <SearchForm
-                path="/search"
-                placeholder="search_text"
-                translate="yes"
-                values={{
-                  q: pathname?.startsWith('/search')
-                    ? ((searchParams.get('q') as string) ?? '')
-                    : '',
-                }}
-                className="hidden sm:flex"
-              />
-            ) : null}
-            {pathname !== '/' ? (
-              <SearchFormDialog className="sm:hidden" />
-            ) : null}
-            {user ? <SignedInNav /> : <SignedOutNav />}
+            <AccountMenu />
           </div>
         </div>
-      </header>
-    </Sheet>
+      </div>
+    </header>
   )
 }
-
-const SignedInNav = () => {
-  return <AccountMenu />
-}
-
-const SignedOutNav = () => {
-  const router = useRouter()
-  const { t } = useTranslation()
-
-  return (
-    <>
-      <Button
-        variant="outline"
-        className="w-10 sm:w-auto"
-        onClick={() => router.push('/auth/signin')}
-      >
-        <LucideIcon name="LogIn" className="size-5 min-w-5 sm:hidden" />
-        <span className="hidden sm:inline">{t('signin')}</span>
-      </Button>
-      <Button
-        className="w-10 sm:w-auto"
-        onClick={() => router.push('/auth/signup')}
-      >
-        <LucideIcon name="UserPlus" className="size-5 min-w-5 sm:hidden" />
-        <span className="hidden sm:inline">{t('signup')}</span>
-      </Button>
-    </>
-  )
-}
-
-export { Header, type HeaderProps }

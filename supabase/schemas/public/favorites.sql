@@ -1,13 +1,13 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                      public.favorites                      --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Functions for tracking last modification time
 create extension if not exists moddatetime schema extensions;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop trigger if exists on_updated_at on favorites;
 
@@ -15,7 +15,7 @@ drop function if exists set_favorite;
 
 drop table if exists favorites;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table favorites (
@@ -46,7 +46,7 @@ create policy "User can delete their own favorites" on favorites for delete to a
 create trigger on_updated_at before update on favorites
   for each row execute procedure moddatetime (updated_at);
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_favorite(postid bigint, userid uuid, isfavorite boolean)
 returns void

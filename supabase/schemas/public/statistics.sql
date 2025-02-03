@@ -1,8 +1,8 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                     public.statistics                      --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop function if exists set_statistics;
 drop function if exists truncate_statistics;
@@ -10,7 +10,7 @@ drop function if exists get_post_rank_by_views;
 
 drop table if exists statistics;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table statistics (
@@ -41,7 +41,7 @@ create policy "User can insert statistics" on statistics for insert to authentic
 create policy "User can update statistics" on statistics for update to authenticated using ( true );
 create policy "User can delete statistics" on statistics for delete to authenticated using ( true );
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_statistics(data json)
 returns void
@@ -66,7 +66,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function truncate_statistics()
 returns void
@@ -77,7 +77,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function get_post_rank_by_views(
 	username text,

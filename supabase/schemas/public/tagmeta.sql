@@ -1,14 +1,14 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                       public.tagmeta                       --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop function if exists set_tag_meta;
 
 drop table if exists tagmeta;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table tagmeta (
@@ -32,7 +32,7 @@ create policy "User can insert tagmeta" on tagmeta for insert to authenticated w
 create policy "User can update tagmeta" on tagmeta for update to authenticated using ( true );
 create policy "User can delete tagmeta" on tagmeta for delete to authenticated using ( true );
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_tag_meta(tagid bigint, metakey text, metavalue text = null)
 returns void

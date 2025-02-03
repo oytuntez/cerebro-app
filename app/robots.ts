@@ -11,9 +11,9 @@ export default function robots(): MetadataRoute.Robots {
     },
     sitemap: [
       BASE_URL + '/sitemap.xml',
-      process.env.NODE_ENV === 'production'
-        ? BASE_URL + '/posts/sitemap/1.xml'
-        : BASE_URL + '/posts/sitemap.xml/1',
+      // process.env.NODE_ENV === 'production'
+        // ? BASE_URL + '/posts/sitemap/1.xml'
+        // : BASE_URL + '/posts/sitemap.xml/1',
     ],
   }
 }

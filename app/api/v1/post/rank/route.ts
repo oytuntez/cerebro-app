@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
   const supabase = createClient()
   const total = await supabase.rpc(
     'get_post_rank_by_views',
-    { username: user?.username, q, head: true },
+    { username: user?.username ?? "", q, head: true },
     { count: 'exact' }
   )
 
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { data: list, error } = await supabase.rpc('get_post_rank_by_views', {
-    username: user?.username,
+    username: user?.username ?? "",
     q,
     order_by: orderBy,
     ascending: order.toLowerCase() === 'asc',

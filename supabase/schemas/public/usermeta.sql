@@ -1,14 +1,14 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                      public.usermeta                       --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop function if exists set_user_meta;
 
 drop table if exists usermeta;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table usermeta (
@@ -32,17 +32,18 @@ create policy "User can insert their own usermeta" on usermeta for insert to aut
 create policy "User can update their own usermeta" on usermeta for update to authenticated using ( (select auth.uid()) = user_id );
 create policy "User can delete their own usermeta" on usermeta for delete to authenticated using ( (select auth.uid()) = user_id );
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
-create or replace function set_user_meta(userid bigint, metakey text, metavalue text = null)
-returns void
+create or replace function set_user_meta(p_user_id uuid, p_meta_key text, p_meta_value text = null)
+returns setof usermeta
 security definer set search_path = public
-as $$
+    as $$
 begin
-  if exists (select 1 from usermeta where user_id = userid and meta_key = metakey) then
-    update usermeta set meta_value = metavalue where user_id = userid and meta_key = metakey;
-  else
-    insert into usermeta(user_id, meta_key, meta_value) values(userid, metakey, metavalue);
-  end if;
+    if exists (select 1 from usermeta where user_id = p_user_id and meta_key = p_meta_key) then
+update usermeta set meta_value = p_meta_value, updated_at = now() where user_id = p_user_id and meta_key = p_meta_key;
+else
+insert into usermeta(user_id, meta_key, meta_value) values(p_user_id, p_meta_key, p_meta_value);
+end if;
+return QUERY SELECT * FROM usermeta WHERE user_id = p_user_id AND meta_key = p_meta_key;
 end;
 $$ language plpgsql;

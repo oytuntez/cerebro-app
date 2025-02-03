@@ -1,13 +1,13 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                        public.votes                        --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Functions for tracking last modification time
 create extension if not exists moddatetime schema extensions;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop trigger if exists on_updated_at on votes;
 
@@ -15,7 +15,7 @@ drop function if exists get_vote;
 
 drop table if exists votes;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table votes (
@@ -47,7 +47,7 @@ create policy "User can delete their own votes" on votes for delete to authentic
 create trigger on_updated_at before update on votes
   for each row execute procedure moddatetime (updated_at);
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function get_vote(postid bigint)
 returns table(

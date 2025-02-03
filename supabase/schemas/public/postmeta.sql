@@ -1,15 +1,15 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                      public.postmeta                       --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop function if exists set_post_views;
 drop function if exists set_post_meta;
 
 drop table if exists postmeta;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table postmeta (
@@ -33,7 +33,7 @@ create policy "User can insert postmeta" on postmeta for insert to authenticated
 create policy "User can update postmeta" on postmeta for update to authenticated using ( true );
 create policy "User can delete postmeta" on postmeta for delete to authenticated using ( true );
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_post_meta(postid bigint, metakey text, metavalue text = null)
 returns void
@@ -48,7 +48,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_post_views(postid bigint)
 returns void

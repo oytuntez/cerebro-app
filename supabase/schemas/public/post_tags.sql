@@ -1,14 +1,14 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                      public.post_tags                      --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop function if exists set_post_tags;
 
 drop table if exists post_tags;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table post_tags (
@@ -34,7 +34,7 @@ create policy "User can insert their own post_tags" on post_tags for insert to a
 create policy "User can update their own post_tags" on post_tags for update to authenticated using ( (select auth.uid()) = user_id );
 create policy "User can delete their own post_tags" on post_tags for delete to authenticated using ( (select auth.uid()) = user_id );
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_post_tags(
   userid uuid,

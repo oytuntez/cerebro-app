@@ -26,19 +26,11 @@ const AccountMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          className="rounded-full border border-gray-200 dark:border-gray-800"
-          size="icon"
-          variant="ghost"
+        <Button 
+          variant="ghost" 
+          className="font-['Noto_Sans_KR'] text-lg font-medium text-black hover:bg-black/5"
         >
-          <Avatar>
-            <AvatarImage
-              src={user?.avatar_url ?? undefined}
-              alt={`@${user?.username}`}
-            />
-            <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <span className="sr-only">Toggle account menu</span>
+          {user?.username || 'Account'}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

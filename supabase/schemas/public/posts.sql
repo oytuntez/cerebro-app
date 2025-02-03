@@ -1,13 +1,13 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                        public.posts                        --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Functions for tracking last modification time
 create extension if not exists moddatetime schema extensions;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop trigger if exists on_created on posts;
 drop trigger if exists on_updated_at on posts;
@@ -29,7 +29,7 @@ drop function if exists title_description_content;
 
 drop table if exists posts;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table posts (
@@ -76,7 +76,7 @@ create policy "User can delete their own posts" on posts for delete to authentic
 create trigger on_updated_at before update on posts
   for each row execute procedure moddatetime (updated_at);
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function unique_post_slug()
 returns trigger
@@ -110,7 +110,7 @@ $$ language plpgsql;
 create trigger on_slug_upsert before insert or update of slug on posts
   for each row execute function unique_post_slug();
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function generate_post_slug(userid uuid, postslug text)
 returns text
@@ -137,7 +137,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function count_posts(
   userid uuid,
@@ -164,7 +164,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function get_adjacent_post_id(
   postid bigint,
@@ -183,7 +183,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function create_new_posts(data json[])
 returns void
@@ -220,7 +220,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function handle_new_post()
 returns trigger
@@ -235,7 +235,7 @@ $$ language plpgsql;
 create trigger on_created after insert on posts
   for each row execute procedure handle_new_post();
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function truncate_posts()
 returns void
@@ -246,7 +246,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Search multiple columns
 -- https://supabase.com/docs/guides/database/full-text-search?queryGroups=example-view&example-view=sql&queryGroups=language&language=js#search-multiple-columns

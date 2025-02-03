@@ -1,8 +1,8 @@
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 --                                                            --
 --                        public.tags                         --
 --                                                            --
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 drop trigger if exists on_updated_at on tags;
 drop trigger if exists on_slug_upsert on tags;
@@ -13,7 +13,7 @@ drop function if exists set_tag;
 
 drop table if exists tags;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 -- Create a table
 create table tags (
@@ -47,7 +47,7 @@ create policy "User can delete their own tags" on tags for delete to authenticat
 create trigger on_updated_at before update on tags
   for each row execute procedure moddatetime (updated_at);
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function unique_tag_slug()
 returns trigger
@@ -78,7 +78,7 @@ $$ language plpgsql;
 create trigger on_slug_upsert before insert or update of slug on tags
   for each row execute function unique_tag_slug();
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function generate_tag_slug(userid uuid, tagslug text)
 returns text
@@ -105,7 +105,7 @@ begin
 end;
 $$ language plpgsql;
 
-----------------------------------------------------------------
+-- --------------------------------------------------------------
 
 create or replace function set_tag(
   userid uuid,
