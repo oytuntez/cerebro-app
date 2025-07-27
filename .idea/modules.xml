@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/cerebro4.iml" filepath="$PROJECT_DIR$/.idea/cerebro4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../cerebro-engine/.idea/cerebro-engine.iml" filepath="$PROJECT_DIR$/../cerebro-engine/.idea/cerebro-engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/cerebro-app.iml" filepath="$PROJECT_DIR$/.idea/cerebro-app.iml" />
     </modules>
   </component>
 </project>

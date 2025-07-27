@@ -111,6 +111,21 @@ export type Database = {
           },
         ]
       }
+      insights: {
+        Row: {
+          id: number
+          slug: string
+        }
+        Insert: {
+          id?: number
+          slug: string
+        }
+        Update: {
+          id?: number
+          slug?: string
+        }
+        Relationships: []
+      }
       items: {
         Row: {
           created_at: string
@@ -134,21 +149,37 @@ export type Database = {
       }
       nifti_files: {
         Row: {
+          created_at: string
           file_type: string
           id: string
+          parent_nifti_file_id: string | null
+          updated_at: string | null
           user_id: string | null
         }
         Insert: {
+          created_at?: string
           file_type?: string
           id: string
+          parent_nifti_file_id?: string | null
+          updated_at?: string | null
           user_id?: string | null
         }
         Update: {
+          created_at?: string
           file_type?: string
           id?: string
+          parent_nifti_file_id?: string | null
+          updated_at?: string | null
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "nifti_files_parent_nitfi_file_id_fkey"
+            columns: ["parent_nifti_file_id"]
+            isOneToOne: false
+            referencedRelation: "nifti_files"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "nifti_files_user_id_fkey"
             columns: ["user_id"]
@@ -362,6 +393,44 @@ export type Database = {
         }
         Relationships: []
       }
+      roi_volumes: {
+        Row: {
+          atlas_type: string | null
+          created_at: string
+          id: number
+          label: string
+          nifti_file_id: string
+          updated_at: string | null
+          volume: number
+        }
+        Insert: {
+          atlas_type?: string | null
+          created_at?: string
+          id?: number
+          label: string
+          nifti_file_id: string
+          updated_at?: string | null
+          volume: number
+        }
+        Update: {
+          atlas_type?: string | null
+          created_at?: string
+          id?: number
+          label?: string
+          nifti_file_id?: string
+          updated_at?: string | null
+          volume?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roi_volumes_nifti_file_id_fkey"
+            columns: ["nifti_file_id"]
+            isOneToOne: false
+            referencedRelation: "nifti_files"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       role_permissions: {
         Row: {
           id: number
@@ -500,23 +569,113 @@ export type Database = {
           },
         ]
       }
+      user_insight_outputs: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          type: string | null
+          user_insight_id: number | null
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          type?: string | null
+          user_insight_id?: number | null
+          value: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+          type?: string | null
+          user_insight_id?: number | null
+          value?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_insight_outputs_user_insight_id_fkey"
+            columns: ["user_insight_id"]
+            isOneToOne: false
+            referencedRelation: "user_insights"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_insights: {
+        Row: {
+          archived_at: string | null
+          created_at: string | null
+          id: number
+          insight_id: number
+          nifti_file_id: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          archived_at?: string | null
+          created_at?: string | null
+          id?: number
+          insight_id: number
+          nifti_file_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          archived_at?: string | null
+          created_at?: string | null
+          id?: number
+          insight_id?: number
+          nifti_file_id?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_insights_insight_id_fkey"
+            columns: ["insight_id"]
+            isOneToOne: false
+            referencedRelation: "insights"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_insights_nifti_file_id_fkey"
+            columns: ["nifti_file_id"]
+            isOneToOne: false
+            referencedRelation: "nifti_files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_insights_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       usermeta: {
         Row: {
           id: number
           meta_key: string
           meta_value: string | null
+          updated_at: string | null
           user_id: string
         }
         Insert: {
           id?: number
           meta_key: string
           meta_value?: string | null
+          updated_at?: string | null
           user_id: string
         }
         Update: {
           id?: number
           meta_key?: string
           meta_value?: string | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: [
@@ -656,28 +815,18 @@ export type Database = {
         Returns: undefined
       }
       count_posts: {
-        Args: {
-          userid: string
-          posttype?: string
-          q?: string
-        }
+        Args: { userid: string; posttype?: string; q?: string }
         Returns: {
           status: string
           count: number
         }[]
       }
       create_new_posts: {
-        Args: {
-          data: Json[]
-        }
+        Args: { data: Json[] }
         Returns: undefined
       }
       create_new_user: {
-        Args: {
-          useremail: string
-          password?: string
-          metadata?: Json
-        }
+        Args: { useremail: string; password?: string; metadata?: Json }
         Returns: string
       }
       daily_delete_old_cron_job_run_details: {
@@ -685,9 +834,7 @@ export type Database = {
         Returns: undefined
       }
       delete_user: {
-        Args: {
-          useremail: string
-        }
+        Args: { useremail: string }
         Returns: undefined
       }
       generate_password: {
@@ -695,23 +842,15 @@ export type Database = {
         Returns: string
       }
       generate_post_slug: {
-        Args: {
-          userid: string
-          postslug: string
-        }
+        Args: { userid: string; postslug: string }
         Returns: string
       }
       generate_tag_slug: {
-        Args: {
-          userid: string
-          tagslug: string
-        }
+        Args: { userid: string; tagslug: string }
         Returns: string
       }
       generate_username: {
-        Args: {
-          email: string
-        }
+        Args: { email: string }
         Returns: string
       }
       get_adjacent_post_id: {
@@ -724,6 +863,26 @@ export type Database = {
         Returns: {
           previous_id: number
           next_id: number
+        }[]
+      }
+      get_atlas_sampled_nifti_file: {
+        Args: { p_nifti_file_id: string; p_file_type: string }
+        Returns: {
+          id: string
+          file_type: string
+          user_id: string
+          parent_nitfi_file_id: string
+        }[]
+      }
+      get_file_type_among_children: {
+        Args: { p_nifti_file_id: string; p_file_type: string }
+        Returns: {
+          created_at: string
+          file_type: string
+          id: string
+          parent_nifti_file_id: string | null
+          updated_at: string | null
+          user_id: string | null
         }[]
       }
       get_post_rank_by_views: {
@@ -743,10 +902,7 @@ export type Database = {
         }[]
       }
       get_users: {
-        Args: {
-          userrole?: string
-          userplan?: string
-        }
+        Args: { userrole?: string; userplan?: string }
         Returns: {
           age: number | null
           avatar_url: string | null
@@ -772,9 +928,7 @@ export type Database = {
         }[]
       }
       get_vote: {
-        Args: {
-          postid: number
-        }
+        Args: { postid: number }
         Returns: {
           id: number
           like_count: number
@@ -786,38 +940,23 @@ export type Database = {
         Returns: undefined
       }
       set_favorite: {
-        Args: {
-          postid: number
-          userid: string
-          isfavorite: boolean
-        }
+        Args: { postid: number; userid: string; isfavorite: boolean }
         Returns: undefined
       }
       set_post_meta: {
-        Args: {
-          postid: number
-          metakey: string
-          metavalue?: string
-        }
+        Args: { postid: number; metakey: string; metavalue?: string }
         Returns: undefined
       }
       set_post_tags: {
-        Args: {
-          userid: string
-          postid: number
-        }
+        Args: { userid: string; postid: number }
         Returns: undefined
       }
       set_post_views: {
-        Args: {
-          postid: number
-        }
+        Args: { postid: number }
         Returns: undefined
       }
       set_statistics: {
-        Args: {
-          data: Json
-        }
+        Args: { data: Json }
         Returns: undefined
       }
       set_tag: {
@@ -838,65 +977,45 @@ export type Database = {
         }[]
       }
       set_tag_meta: {
-        Args: {
-          tagid: number
-          metakey: string
-          metavalue?: string
-        }
+        Args: { tagid: number; metakey: string; metavalue?: string }
         Returns: undefined
       }
       set_user_meta: {
-        Args: {
-          userid: number
-          metakey: string
-          metavalue?: string
-        }
-        Returns: undefined
+        Args: { p_user_id: string; p_meta_key: string; p_meta_value?: string }
+        Returns: {
+          id: number
+          meta_key: string
+          meta_value: string | null
+          updated_at: string | null
+          user_id: string
+        }[]
       }
       set_user_plan: {
-        Args: {
-          userplan: string
-          userid?: string
-          useremail?: string
-        }
+        Args: { userplan: string; userid?: string; useremail?: string }
         Returns: undefined
       }
       set_user_role: {
-        Args: {
-          userrole: string
-          userid?: string
-          useremail?: string
-        }
+        Args: { userrole: string; userid?: string; useremail?: string }
         Returns: undefined
       }
       title_content: {
-        Args: {
-          "": unknown
-        }
+        Args: { "": Database["public"]["Tables"]["posts"]["Row"] }
         Returns: string
       }
       title_description: {
-        Args: {
-          "": unknown
-        }
+        Args: { "": Database["public"]["Tables"]["posts"]["Row"] }
         Returns: string
       }
       title_description_content: {
-        Args: {
-          "": unknown
-        }
+        Args: { "": Database["public"]["Tables"]["posts"]["Row"] }
         Returns: string
       }
       title_description_keywords: {
-        Args: {
-          "": unknown
-        }
+        Args: { "": Database["public"]["Tables"]["posts"]["Row"] }
         Returns: string
       }
       title_keywords: {
-        Args: {
-          "": unknown
-        }
+        Args: { "": Database["public"]["Tables"]["posts"]["Row"] }
         Returns: string
       }
       truncate_posts: {
@@ -907,11 +1026,18 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      usermeta_upsert: {
+        Args: { p_user_id: string; p_meta_key: string; p_meta_value: string }
+        Returns: {
+          id: number
+          meta_key: string
+          meta_value: string | null
+          updated_at: string | null
+          user_id: string
+        }[]
+      }
       verify_user_password: {
-        Args: {
-          userid: string
-          password: string
-        }
+        Args: { userid: string; password: string }
         Returns: boolean
       }
     }
@@ -1141,30 +1267,19 @@ export type Database = {
     }
     Functions: {
       can_insert_object: {
-        Args: {
-          bucketid: string
-          name: string
-          owner: string
-          metadata: Json
-        }
+        Args: { bucketid: string; name: string; owner: string; metadata: Json }
         Returns: undefined
       }
       extension: {
-        Args: {
-          name: string
-        }
+        Args: { name: string }
         Returns: string
       }
       filename: {
-        Args: {
-          name: string
-        }
+        Args: { name: string }
         Returns: string
       }
       foldername: {
-        Args: {
-          name: string
-        }
+        Args: { name: string }
         Returns: string[]
       }
       get_size_by_bucket: {
@@ -1239,27 +1354,29 @@ export type Database = {
   }
 }
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type DefaultSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
-  PublicTableNameOrOptions extends
-    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-        Database[PublicTableNameOrOptions["schema"]]["Views"])
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
-      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-        PublicSchema["Views"])
-    ? (PublicSchema["Tables"] &
-        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R
       }
       ? R
@@ -1267,20 +1384,22 @@ export type Tables<
     : never
 
 export type TablesInsert<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Insert: infer I
       }
       ? I
@@ -1288,20 +1407,22 @@ export type TablesInsert<
     : never
 
 export type TablesUpdate<
-  PublicTableNameOrOptions extends
-    | keyof PublicSchema["Tables"]
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
     | { schema: keyof Database },
-  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
         Update: infer U
       }
       ? U
@@ -1309,21 +1430,23 @@ export type TablesUpdate<
     : never
 
 export type Enums<
-  PublicEnumNameOrOptions extends
-    | keyof PublicSchema["Enums"]
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
     | { schema: keyof Database },
-  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof PublicSchema["CompositeTypes"]
+    | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
     schema: keyof Database
@@ -1332,6 +1455,18 @@ export type CompositeTypes<
     : never = never,
 > = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
   ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
-    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
+
+export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
+  public: {
+    Enums: {},
+  },
+  storage: {
+    Enums: {},
+  },
+} as const
