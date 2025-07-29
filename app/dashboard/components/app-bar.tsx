@@ -15,7 +15,7 @@ const AppBar = ({ children, className, ...props }: AppBarProps) => {
     <header
       className={cn(
         'flex w-full items-center gap-4 border-b bg-background px-4',
-        'h-[60px]',
+        'h-[80px]',
         className
       )}
       {...props}

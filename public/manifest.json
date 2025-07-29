@@ -1,7 +1,7 @@
 {
-    "name": "NextJS supabase dashboard",
-    "short_name": "NextJS supabase dashboard",
-    "description": "This is a dashboard starter template for the NextJS 14 app router using supabase based on shadcn-ui.",
+    "name": "Cerebro App",
+    "short_name": "Cerebro App",
+    "description": "Cerebro App",
     "start_url": "/",
     "scope": "/",
     "display": "standalone",

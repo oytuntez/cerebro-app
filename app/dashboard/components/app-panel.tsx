@@ -37,7 +37,7 @@ const AppPanel = ({ children }: { children?: React.ReactNode }) => {
       >
         <Navigation />
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle withHandle className="opacity-0 hover:opacity-100 transition-opacity" />
       <ResizablePanel
         defaultSize={Array.isArray(layout) ? layout[1] : 75}
         minSize={75}

@@ -1,23 +1,24 @@
 export const theme = {
   colors: {
-    // Brand colors
-    primary: "yellow-400", // Main CTA color
-    primaryHover: "yellow-500",
-    background: "[#FDF8F3]", // Cream background
+    // Brand colors - Ocean-inspired blues
+    primary: "blue-500", // Main CTA color - ocean blue
+    primaryHover: "blue-600",
+    background: "[#F8FAFC]", // Light blue-gray background
     
     // Text colors
     text: {
-      primary: "gray-900",
-      secondary: "gray-600",
-      muted: "gray-500"
+      primary: "slate-800",
+      secondary: "slate-600", 
+      muted: "slate-500"
     },
     
     // UI colors
-    border: "gray-200",
+    border: "slate-200",
     card: "white",
     
     // State colors
-    hover: "gray-100"
+    hover: "blue-50",
+    accent: "sky-200" // Light blue accent
   },
   
   // You can extend this with other theme values like
