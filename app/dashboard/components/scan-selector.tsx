@@ -17,7 +17,7 @@ import { useSelectedScan } from '../hooks/use-selected-scan'
 export function ScanSelector() {
   const { selectedScan, allScans, loading, selectScan } = useSelectedScan()
   const pathname = usePathname()
-  
+
   const isResultsPage = pathname.startsWith('/dashboard/results/')
 
   const getStatusBadge = (status?: string) => {
@@ -49,27 +49,20 @@ export function ScanSelector() {
   }
 
   return (
-    <div className="px-4 py-2">
+    <div className="mx-2">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full justify-between h-auto p-2 hover:bg-muted/50"
+            className="w-full justify-between flex items-center break-all text-left text-base h-10 px-3 py-3 rounded-md transition-colors hover:bg-secondary hover:text-secondary-foreground hover:no-underline text-muted-foreground"
           >
-            <div className="flex items-start space-x-2 text-left">
-              <Brain className="h-4 w-4 mt-0.5 text-muted-foreground" />
-              <div className="flex-1 min-w-0">
-                <div className="text-sm font-medium truncate">
-                  {selectedScan ? `Scan ${formatDate(selectedScan.created_at)}` : 'Select Scan'}
-                </div>
-                {selectedScan && (
-                  <div className="flex items-center gap-2 mt-1">
-                    {getStatusBadge(selectedScan.processing_status)}
-                  </div>
-                )}
-              </div>
+            <div className="flex items-center space-x-3 text-left flex-1">
+              <Brain className="size-5 min-w-5" />
+              <span className="truncate">
+                {selectedScan ? `Scan ${formatDate(selectedScan.created_at)}` : 'Select Scan'}
+              </span>
             </div>
-            <ChevronDown className="h-4 w-4 shrink-0" />
+            <ChevronDown className="size-5 min-w-5 shrink-0" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-64">

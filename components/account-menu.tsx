@@ -28,7 +28,7 @@ const AccountMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="font-['Noto_Sans_KR'] text-lg font-medium text-black hover:bg-accent hover:text-accent-foreground flex items-center gap-2 rounded-xl transition-colors"
+          className="font-['Noto_Sans_KR'] text-lg font-medium text-black flex items-center gap-2 rounded-xl transition-colors"
         >
           <Avatar className="h-8 w-8">
             <AvatarFallback className="text-sm font-medium">

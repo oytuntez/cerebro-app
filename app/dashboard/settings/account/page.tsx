@@ -26,7 +26,7 @@ export default async function AccountPage() {
         <ChangeUsernameForm />
       </div>
       <div className="space-y-4">
-        <Title className="text-destructive dark:text-white" translate="yes">
+        <Title style={{ color: '#E29578' }} translate="yes">
           delete_account
         </Title>
         <Separator />

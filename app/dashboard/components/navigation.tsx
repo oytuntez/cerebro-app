@@ -35,24 +35,16 @@ const Navigation = () => {
   const pathname = usePathname()
   const defaultValue = pathname.split('/').slice(0, 3).join('/')
 
-  // Group results-related items
-  const resultsItems = dashboardConfig?.nav?.filter(item => 
-    item.href.startsWith('/dashboard/results/') || item?.id === 1
-  )
-  const otherItems = dashboardConfig?.nav?.filter(item => 
-    !item.href.startsWith('/dashboard/results/') && item?.id !== 1
-  )
-
   return (
     <div className="py-4">
-      <Accordion type="multiple" defaultValue={[defaultValue]}>
-        {/* Other navigation items */}
-        {otherItems?.map((item: DashboardNavItem) => {
+      <ScanSelector />
+      <Accordion type="multiple" defaultValue={[defaultValue]} className="space-y-0">
+        {dashboardConfig?.nav?.map((item: DashboardNavItem) => {
           const denied =
             Array.isArray(item?.roles) &&
             user?.role &&
             !item?.roles?.includes(user?.role)
-          
+
           return denied ? null : (
             <React.Fragment key={item?.id}>
               {item?.separator ? <div className="my-4" /> : null}
@@ -60,34 +52,12 @@ const Navigation = () => {
             </React.Fragment>
           )
         })}
-        
-        {/* Results panel with scan selector */}
-        {resultsItems.length > 0 && (
-          <>
-            <div className="my-6" />
-            <div className="mx-2 bg-accent/40 rounded-lg p-4 space-y-1">
-              <ScanSelector />
-              <div className="space-y-0">
-                {resultsItems?.map((item: DashboardNavItem) => {
-                  const denied =
-                    Array.isArray(item?.roles) &&
-                    user?.role &&
-                    !item?.roles?.includes(user?.role)
-                  
-                  return denied ? null : (
-                    <NavItem key={item?.id} item={item} isInPanel={true} />
-                  )
-                })}
-              </div>
-            </div>
-          </>
-        )}
       </Accordion>
     </div>
   )
 }
 
-const NavItem = ({ item, isInPanel = false }: { item: DashboardNavItem; isInPanel?: boolean }) => {
+const NavItem = ({ item }: { item: DashboardNavItem }) => {
   const { t } = useTranslation()
   const { collapsed } = useAppSelector(({ app }) => app)
 
@@ -98,9 +68,7 @@ const NavItem = ({ item, isInPanel = false }: { item: DashboardNavItem; isInPane
           <TooltipTrigger asChild>
             <AccordionTrigger
               className={cn(
-                isInPanel 
-                  ? 'hover:no-underline mx-1'
-                  : 'hover:no-underline mx-2',
+                'hover:no-underline mx-2',
                 Array.isArray(item?.sub) ? '' : 'hover:cursor-default'
               )}
             >
@@ -111,7 +79,6 @@ const NavItem = ({ item, isInPanel = false }: { item: DashboardNavItem; isInPane
                 iconName={item?.iconName}
                 iconClassName="mr-3"
                 disabled={item?.disabled}
-                isInPanel={isInPanel}
               >
                 {item?.text}
               </NavLink>
@@ -182,7 +149,6 @@ interface NavLinkProps
   text?: string
   ns?: string
   disabled?: boolean
-  isInPanel?: boolean
 }
 
 const NavLink = ({
@@ -196,7 +162,6 @@ const NavLink = ({
   ns,
   translate,
   disabled = false,
-  isInPanel = false,
   ...props
 }: NavLinkProps) => {
   const { t } = useTranslation()
@@ -222,10 +187,10 @@ const NavLink = ({
       <Link
         href={finalHref}
         className={cn(
-          'flex items-center break-all text-left text-base py-2 px-4 rounded-xl transition-colors',
-          disabled ? 'pointer-events-none opacity-50' : 'hover:bg-accent hover:text-accent-foreground hover:no-underline',
+          'flex items-center break-all text-left text-base h-10 px-4 py-2 rounded-md transition-colors',
+          disabled ? 'pointer-events-none opacity-50' : 'hover:bg-secondary hover:text-secondary-foreground hover:no-underline',
           [pathname, parent].includes(href as string)
-            ? 'bg-accent text-accent-foreground'
+            ? 'bg-secondary text-secondary-foreground'
             : 'text-muted-foreground',
           className
         )}

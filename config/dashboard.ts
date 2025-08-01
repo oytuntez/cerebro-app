@@ -22,26 +22,18 @@ export interface DashboardConfig {
 export const dashboardConfig: DashboardConfig = {
   nav: [
     {
-      id: 2,
-      href: '/dashboard/upload',
-      text: 'Upload MRI',
-      translate: 'no',
-      iconName: 'Upload',
-    },
-    {
-      id: 3,
-      href: '/dashboard/scans',
-      text: 'My Scans',
-      translate: 'no',
-      iconName: 'Brain',
-    },
-    {
       id: 1,
       href: '/dashboard/results/summary',
       text: 'Summary',
       translate: 'no',
       iconName: 'LayoutDashboard',
-      separator: true,
+    },
+    {
+      id: 8,
+      href: '/dashboard/results/story',
+      text: 'Your Brain Story',
+      translate: 'no',
+      iconName: 'Sparkles',
     },
     {
       id: 4,
@@ -70,6 +62,13 @@ export const dashboardConfig: DashboardConfig = {
       text: 'Curvature Stats',
       translate: 'no',
       iconName: 'TrendingUp',
+    },
+    {
+      id: 9,
+      href: '/dashboard/results/language',
+      text: 'Language Systems',
+      translate: 'no',
+      iconName: 'MessageSquare',
     },
   ],
 }
