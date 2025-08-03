@@ -76,11 +76,11 @@ export function StoryClient() {
 
   if (scanLoading || loading) {
     return (
-      <div className="h-screen w-screen overflow-hidden">
+      <div className="min-h-screen">
         <AppBar className="sticky left-0 top-0 z-10" />
         <AppPanel>
-          <div className="flex flex-1 flex-col">
-            <main className="flex-1 space-y-4 overflow-auto p-8 pb-36">
+          <div className="flex flex-col">
+            <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
               <div className="flex items-center justify-center py-12">
                 <div className="text-muted-foreground">Loading your brain story...</div>
               </div>
@@ -93,11 +93,11 @@ export function StoryClient() {
 
   if (!selectedScan || !brainData) {
     return (
-      <div className="h-screen w-screen overflow-hidden">
+      <div className="min-h-screen">
         <AppBar className="sticky left-0 top-0 z-10" />
         <AppPanel>
-          <div className="flex flex-1 flex-col">
-            <main className="flex-1 space-y-4 overflow-auto p-8 pb-36">
+          <div className="flex flex-col">
+            <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
               <Alert>
                 <AlertCircle className="h-4 w-4" />
                 <AlertDescription>
@@ -116,11 +116,11 @@ export function StoryClient() {
   const hemisphereBalance = ((summary.lh_cortex_volume / (summary.lh_cortex_volume + summary.rh_cortex_volume)) * 100)?.toFixed(1)
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="min-h-screen">
       <AppBar className="sticky left-0 top-0 z-10" />
       <AppPanel>
-        <div className="flex flex-1 flex-col">
-          <main className="flex-1 space-y-8 overflow-auto p-8 pb-36">
+        <div className="flex flex-col">
+          <main className="space-y-8 p-4 sm:p-6 lg:p-8 pb-36">
             {/* Hero Section */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">

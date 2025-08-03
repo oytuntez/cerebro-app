@@ -93,11 +93,11 @@ export default async function SubcorticalPage({ searchParams }: SubcorticalPageP
 
   if (!scan) {
     return (
-      <div className="h-screen w-screen overflow-hidden">
+      <div className="min-h-screen">
         <AppBar className="sticky left-0 top-0 z-10" />
         <AppPanel>
-          <div className="flex flex-1 flex-col">
-            <main className="flex-1 space-y-4 overflow-auto p-8 pb-36">
+          <div className="flex flex-col">
+            <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <Title translate="no">Subcortical Segmentations</Title>
@@ -136,11 +136,11 @@ export default async function SubcorticalPage({ searchParams }: SubcorticalPageP
   const totalVolume = structures.reduce((sum, s) => sum + (s.volume_mm3 || 0), 0)
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="min-h-screen">
       <AppBar className="sticky left-0 top-0 z-10" />
       <AppPanel>
-        <div className="flex flex-1 flex-col">
-          <main className="flex-1 space-y-4 overflow-auto p-8 pb-36">
+        <div className="flex flex-col">
+          <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <Title translate="no">Subcortical Segmentations</Title>

@@ -104,11 +104,11 @@ export function SummaryClient() {
 
   if (scanLoading) {
     return (
-      <div className="h-screen w-screen overflow-hidden">
+      <div className="min-h-screen">
         <AppBar className="sticky left-0 top-0 z-10" />
         <AppPanel>
-          <div className="flex flex-1 flex-col">
-            <main className="flex-1 space-y-4 overflow-auto p-8 pb-36">
+          <div className="flex flex-col">
+            <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
               <div className="flex items-center justify-center py-12">
                 <div className="text-muted-foreground">Loading...</div>
               </div>
@@ -121,11 +121,11 @@ export function SummaryClient() {
 
   if (!selectedScan) {
     return (
-      <div className="h-screen w-screen overflow-hidden">
+      <div className="min-h-screen">
         <AppBar className="sticky left-0 top-0 z-10" />
         <AppPanel>
-          <div className="flex flex-1 flex-col">
-            <main className="flex-1 space-y-4 overflow-auto p-8 pb-36">
+          <div className="flex flex-col">
+            <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <Title translate="no">Summary Statistics</Title>
@@ -147,11 +147,11 @@ export function SummaryClient() {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="min-h-screen">
       <AppBar className="sticky left-0 top-0 z-10" />
       <AppPanel>
-        <div className="flex flex-1 flex-col">
-          <main className="flex-1 space-y-8 overflow-auto p-12 pb-36">
+        <div className="flex flex-col">
+          <main className="space-y-8 p-4 sm:p-6 lg:p-12 pb-36">
             <div className="flex flex-wrap items-center justify-between gap-6">
               <div className="space-y-2">
                 <Title translate="no">Summary Statistics</Title>
