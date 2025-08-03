@@ -15,7 +15,7 @@ import { getUserAPI } from '@/queries/server/users'
 
 interface CurvatureStats {
   id: string
-  hemisphere: 'lh' | 'rh'
+  hemisphere: 'lh' | 'rh' | string
   curv_mean: number | null
   curv_std: number | null
   curv_min: number | null
@@ -35,7 +35,7 @@ interface CurvaturePageProps {
 
 export default async function CurvaturePage({ searchParams }: CurvaturePageProps) {
   const { user } = await getUserAPI()
-  
+
   if (!user) redirect('/auth/signin')
 
   // Check if scan ID is provided
@@ -117,7 +117,7 @@ export default async function CurvaturePage({ searchParams }: CurvaturePageProps
             {title}
           </CardTitle>
           <CardDescription>
-            Surface area: {stats.surface_area?.toFixed(1) || 'N/A'} mm² • 
+            Surface area: {stats.surface_area?.toFixed(1) || 'N/A'} mm² •
             {stats.num_vertices?.toLocaleString() || 'N/A'} vertices
           </CardDescription>
         </CardHeader>

@@ -17,18 +17,18 @@ import { useSelectedScan } from '@/app/dashboard/hooks/use-selected-scan'
 import { createClient } from '@/supabase/client'
 
 interface SummaryStats {
-  total_brain_volume: number
-  estimated_total_intracranial_volume: number
-  total_cortex_volume: number
-  total_white_matter: number
-  lh_mean_thickness: number
-  rh_mean_thickness: number
-  lh_cortex_volume: number
-  lh_surface_area: number
-  lh_mean_curvature: number
-  rh_cortex_volume: number
-  rh_surface_area: number
-  rh_mean_curvature: number
+  total_brain_volume: number | null
+  estimated_total_intracranial_volume: number | null
+  total_cortex_volume: number | null
+  total_white_matter: number | null
+  lh_mean_thickness: number | null
+  rh_mean_thickness: number | null
+  lh_cortex_volume: number | null
+  lh_surface_area: number | null
+  lh_mean_curvature: number | null
+  rh_cortex_volume: number | null
+  rh_surface_area: number | null
+  rh_mean_curvature: number | null
 }
 
 export function SummaryClient() {
@@ -201,7 +201,7 @@ export function SummaryClient() {
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="text-3xl font-bold mb-2">
-                  {((summaryStats.lh_mean_thickness + summaryStats.rh_mean_thickness) / 2).toFixed(3) || 'N/A'} mm
+                  {(((summaryStats.lh_mean_thickness ?? 0) + (summaryStats.rh_mean_thickness ?? 0)) / 2).toFixed(3) || 'N/A'} mm
                 </div>
                 <p className="text-sm text-muted-foreground">
                   LH: {summaryStats.lh_mean_thickness?.toFixed(3) || 'N/A'} / RH: {summaryStats.rh_mean_thickness?.toFixed(3) || 'N/A'}

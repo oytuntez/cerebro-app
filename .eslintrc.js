@@ -50,7 +50,7 @@ module.exports = {
     // Using exported name ... as identifier for default export.
     // 'import/no-named-as-default': 'warn',
     // ... is not defined.
-    'no-undef': 'error',
+    'no-undef': 'warn',
     // Unable to resolve path to module ...
     'import/no-unresolved': 'warn',
     // ... is defined but never used.

@@ -25,7 +25,8 @@ import { Badge } from '@/components/ui/badge'
 
 interface CorticalRegion {
   id: string
-  hemisphere: 'lh' | 'rh'
+  created_at?: string | null
+  hemisphere: 'lh' | 'rh' | string
   structure_name: string
   atlas: string
   num_vertices: number | null
@@ -45,7 +46,7 @@ interface CorticalRegionsPageProps {
 
 export default async function CorticalRegionsPage({ searchParams }: CorticalRegionsPageProps) {
   const { user } = await getUserAPI()
-  
+
   if (!user) redirect('/auth/signin')
 
   // Check if scan ID is provided
