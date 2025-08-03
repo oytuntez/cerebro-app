@@ -180,7 +180,7 @@ const NavLink = ({
     return originalHref
   }
 
-  const finalHref = getHrefWithParams(href)
+  const finalHref = getHrefWithParams(href.toString())
 
   return (
     <div className={cn(disabled ? 'cursor-not-allowed' : '')}>
