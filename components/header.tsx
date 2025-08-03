@@ -30,9 +30,11 @@ export function Header() {
 
           {/* Account Section */}
           <div className="flex items-center gap-2">
-            <Button variant="default" className="bg-black text-white hover:bg-black/90">
-              Dashboard
-            </Button>
+            <Link href="/dashboard">
+              <Button variant="default" className="bg-black text-white hover:bg-black/90">
+                Dashboard
+              </Button>
+            </Link>
             <AccountMenu />
           </div>
         </div>

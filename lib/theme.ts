@@ -1,23 +1,26 @@
 export const theme = {
   colors: {
-    // Brand colors
-    primary: "yellow-400", // Main CTA color
-    primaryHover: "yellow-500",
-    background: "[#FDF8F3]", // Cream background
+    // Brand colors - Ocean-inspired palette
+    primary: "[#006D77]", // Caribbean Current - Main CTA color
+    primaryHover: "[#005A63]", // Darker shade for hover
+    secondary: "[#83C5BE]", // Tiffany Blue
+    background: "[#EDF6F9]", // Alice Blue - Light background
     
     // Text colors
     text: {
-      primary: "gray-900",
-      secondary: "gray-600",
-      muted: "gray-500"
+      primary: "[#006D77]", // Caribbean Current for primary text
+      secondary: "[#005A63]", // Darker shade for secondary text
+      muted: "[#4A8B86]" // Muted teal
     },
     
     // UI colors
-    border: "gray-200",
+    border: "[#B5D7D3]", // Light tiffany blue for borders
     card: "white",
     
     // State colors
-    hover: "gray-100"
+    hover: "[#F5FAFB]", // Very light alice blue
+    accent: "[#FFDDD2]", // Pale Dogwood - Light accent
+    destructive: "[#E29578]" // Atomic Tangerine - for warnings/errors
   },
   
   // You can extend this with other theme values like

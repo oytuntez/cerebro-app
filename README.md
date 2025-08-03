@@ -1,8 +1,8 @@
-# NextJS Supabase Dashboard
+# Cerebro App - MRI Engine for Brain Insights
 
-This is a dashboard starter template for the [NextJS](https://nextjs.org) 14 app router using supabase based on [shadcn-ui](https://ui.shadcn.com).
+A modern dashboard application for visualizing and analyzing brain MRI data, powered by the cerebro-engine processing pipeline.
 
-Denpendency
+Dependency
 
 - NextJS 14 + Typescript + Tailwind
 - Shadcn UI (Radix UI) + TimePicker + TagInput
@@ -62,19 +62,6 @@ The folder and file structure is based on nextjs app router [next.js project str
 └── package.json                # Project dependencies and scripts
 ```
 
-## Getting Started
-
-Find and replace the following text in `supabase/seed.sql` and run sql.
-
-- `YOUR_BUCKET_ID`
-- `username@example.com`
-
-Cloning a repository.
-
-```shell
-git clone https://github.com/w3labkr/nextjs-supabase-dashboard.git
-```
-
 Install all modules listed as dependencies.
 
 ```shell
@@ -86,23 +73,6 @@ Start the development server.
 ```shell
 npm run dev
 ```
-
-## Generate Favicon
-
-Add `favicon.ico` file to `/app` directory.
-
-- [Favicon.ico & App Icon Generator](https://www.favicon-generator.org)
-
-Generate manifest and splash screen.
-
-```shell
-vim public/manifest.json
-```
-
-- [PWA Image Generator](https://www.pwabuilder.com/imageGenerator),
-  [Maskable Icon Generator](https://progressier.com/maskable-icons-editor),
-  [PWA Manifest Generator](https://www.simicart.com/manifest-generator.html)
-- [Custom Splash Screen on iOS](https://appsco.pe/developer/splash-screens)
 
 ## Docs
 
@@ -124,10 +94,6 @@ vim public/manifest.json
 - For eslint, check the [latest version](https://www.npmjs.com/package/@typescript-eslint/eslint-plugin?activeTab=versions) of `@typescript-eslint/eslint-plugin` and upgrade.
 - For ckeditor5, check the downloadable version in the [online builder](https://ckeditor.com/ckeditor-5/online-builder/) and upgrade.
 - If an error occurs in the pre-rendered `sitemap.xml`, access the page in development mode and run a rebuild.
-
-## License
-
-This software license under the [MIT License](LICENSE).
 
 ## Reference
 

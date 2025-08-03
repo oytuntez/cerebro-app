@@ -2,6 +2,7 @@ import * as React from 'react'
 import { redirect } from 'next/navigation'
 
 import { DemoSiteWarningNotification } from './components/demo-site-warning-notification'
+import { ScanProvider } from './hooks/use-selected-scan'
 import { getUserAPI } from '@/queries/server/users'
 
 export default async function DashboardLayout({
@@ -20,7 +21,9 @@ export default async function DashboardLayout({
       {process.env.NODE_ENV === 'production' ? (
         <DemoSiteWarningNotification />
       ) : null}
-      {children}
+      <ScanProvider>
+        {children}
+      </ScanProvider>
     </>
   )
 }

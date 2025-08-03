@@ -28,9 +28,18 @@ const AccountMenu = () => {
       <DropdownMenuTrigger asChild>
         <Button 
           variant="ghost" 
-          className="font-['Noto_Sans_KR'] text-lg font-medium text-black hover:bg-black/5"
+          className="font-['Noto_Sans_KR'] text-lg font-medium text-black flex items-center gap-2 rounded-xl transition-colors"
         >
-          {user?.username || 'Account'}
+          <Avatar className="h-8 w-8">
+            <AvatarFallback className="text-sm font-medium">
+              {user?.full_name
+                ?.split(' ')
+                .map(name => name[0])
+                .join('')
+                .toUpperCase() || 'AC'}
+            </AvatarFallback>
+          </Avatar>
+          {user?.full_name?.split(' ')[0] || user?.username || 'Account'}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -40,18 +49,46 @@ const AccountMenu = () => {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link
-            href={user?.username ? absoluteUrl(`/${user?.username}`) : '#'}
-            className="cursor-pointer"
-          >
+          <Link href="/dashboard/users/profile" className="cursor-pointer">
             {t('profile')}
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/dashboard/users/profile" className="cursor-pointer">
-            {t('settings')}
+          <Link href="/dashboard/settings/account" className="cursor-pointer">
+            {t('account')}
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/settings/notifications" className="cursor-pointer">
+            {t('notifications')}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/settings/emails" className="cursor-pointer">
+            {t('emails')}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/settings/security" className="cursor-pointer">
+            {t('password_and_authentication')}
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/appearance" className="cursor-pointer">
+            {t('appearance')}
+          </Link>
+        </DropdownMenuItem>
+        {(user?.role === 'admin' || user?.role === 'superadmin') && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link href="/dashboard/admin" className="cursor-pointer">
+                {t('admin')}
+              </Link>
+            </DropdownMenuItem>
+          </>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <SignOutButton
