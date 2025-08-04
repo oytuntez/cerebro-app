@@ -188,7 +188,7 @@ const NavLink = ({
         href={finalHref}
         className={cn(
           'flex items-center break-all text-left text-base h-10 px-4 py-2 rounded-md transition-colors',
-          disabled ? 'pointer-events-none opacity-50' : 'hover:bg-secondary hover:text-secondary-foreground hover:no-underline',
+          disabled ? 'pointer-events-none opacity-50' : 'hover:bg-secondary/20 hover:text-foreground hover:no-underline',
           [pathname, parent].includes(href as string)
             ? 'bg-secondary text-secondary-foreground'
             : 'text-muted-foreground',

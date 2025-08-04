@@ -10,13 +10,13 @@ import { AlertCircle } from 'lucide-react'
 import { AppBar } from '@/app/dashboard/components/app-bar'
 import { AppPanel } from '@/app/dashboard/components/app-panel'
 import { getUserAPI } from '@/queries/server/users'
-import LanguagePageClient from './language-page-client'
+import ApproachAvoidanceClient from './approach-avoidance-client'
 
-interface LanguagePageProps {
+interface ApproachAvoidancePageProps {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export default async function LanguagePage({ searchParams }: LanguagePageProps) {
+export default async function ApproachAvoidancePage({ searchParams }: ApproachAvoidancePageProps) {
   const { user } = await getUserAPI()
 
   if (!user) redirect('/auth/signin')
@@ -47,8 +47,8 @@ export default async function LanguagePage({ searchParams }: LanguagePageProps) 
             <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <Title translate="no">Language Systems</Title>
-                  <Description translate="no">Exploring the neural foundations of human language</Description>
+                  <Title translate="no">Approach vs Avoidance Systems</Title>
+                  <Description translate="no">Exploring the neural circuits of motivation and threat response</Description>
                 </div>
               </div>
               <Separator />
@@ -65,7 +65,7 @@ export default async function LanguagePage({ searchParams }: LanguagePageProps) 
     )
   }
 
-  // Fetch cortical regions for language-related areas
+  // Fetch cortical regions for approach-avoidance related areas
   const { data: corticalRegions } = await supabase
     .from('freesurfer_cortical_regions')
     .select('*')
@@ -81,13 +81,13 @@ export default async function LanguagePage({ searchParams }: LanguagePageProps) 
           <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
-                <Title translate="no">Language Systems</Title>
-                <Description translate="no">Exploring the neural foundations of human language</Description>
+                <Title translate="no">Approach vs Avoidance Systems</Title>
+                <Description translate="no">Exploring the neural circuits of motivation and threat response</Description>
               </div>
             </div>
             <Separator />
 
-            <LanguagePageClient />
+            <ApproachAvoidanceClient />
           </main>
         </div>
       </AppPanel>

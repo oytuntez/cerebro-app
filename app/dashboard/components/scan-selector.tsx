@@ -23,11 +23,11 @@ export function ScanSelector() {
   const getStatusBadge = (status?: string) => {
     switch (status) {
       case 'pending':
-        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 text-xs">Pending</Badge>
+        return <Badge variant="secondary" className="bg-gray-100 text-gray-800 text-xs">Pending</Badge>
       case 'processing':
-        return <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">Processing</Badge>
+        return <Badge variant="secondary" className="bg-gray-200 text-gray-800 text-xs">Processing</Badge>
       case 'completed':
-        return <Badge variant="secondary" className="bg-green-100 text-green-800 text-xs">Completed</Badge>
+        return <Badge variant="secondary" className="bg-gray-300 text-gray-800 text-xs">Completed</Badge>
       case 'error':
         return <Badge variant="destructive" className="text-xs">Error</Badge>
       default:
@@ -49,12 +49,12 @@ export function ScanSelector() {
   }
 
   return (
-    <div className="mx-2">
+    <div className="min-w-[200px]">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full justify-between flex items-center break-all text-left text-base h-10 px-3 py-3 rounded-md transition-colors hover:bg-secondary hover:text-secondary-foreground hover:no-underline text-muted-foreground"
+            className="w-full justify-between flex items-center break-all text-left text-base h-10 px-3 py-3 rounded-md transition-colors hover:bg-secondary/20 hover:text-foreground hover:no-underline text-muted-foreground"
           >
             <div className="flex items-center space-x-3 text-left flex-1">
               <Brain className="size-5 min-w-5" />
