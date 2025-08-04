@@ -70,5 +70,12 @@ export const dashboardConfig: DashboardConfig = {
       translate: 'no',
       iconName: 'MessageSquare',
     },
+    {
+      id: 10,
+      href: '/dashboard/results/approach-avoidance',
+      text: 'Approach vs Avoidance',
+      translate: 'no',
+      iconName: 'Scale',
+    },
   ],
 }

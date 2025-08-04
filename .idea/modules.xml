@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../cerebro-engine/.idea/cerebro-engine.iml" filepath="$PROJECT_DIR$/../cerebro-engine/.idea/cerebro-engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/cerebro-app.iml" filepath="$PROJECT_DIR$/.idea/cerebro-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../cerebro-brain-visual/.idea/cerebro-brain-visual.iml" filepath="$PROJECT_DIR$/../cerebro-brain-visual/.idea/cerebro-brain-visual.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../cerebro-engine/.idea/cerebro-engine.iml" filepath="$PROJECT_DIR$/../cerebro-engine/.idea/cerebro-engine.iml" />
     </modules>
   </component>
 </project>
