@@ -91,7 +91,7 @@ const approachAvoidanceSystems = [
     icon: Scale,
     description: 'Hippocampal-septal BIS conflict detection',
     angle: 270, // Left
-    color: 'green',
+    color: 'yellow',
     segments: [
       {
         id: 'hippocampus-conflict',
@@ -236,7 +236,7 @@ const approachAvoidanceSystems = [
 const colorPalettes = {
   orange: ['#fed7aa', '#fdba74', '#fb923c', '#f97316', '#ea580c'],
   blue: ['#bfdbfe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb'],
-  green: ['#bbf7d0', '#86efac', '#4ade80', '#22c55e', '#16a34a'],
+  yellow: ['#fef08a', '#fde047', '#facc15', '#eab308', '#ca8a04'],
   purple: ['#e9d5ff', '#d8b4fe', '#c084fc', '#a855f7', '#9333ea'],
   red: ['#fecaca', '#fca5a5', '#f87171', '#ef4444', '#dc2626'],
   teal: ['#a7f3d0', '#6ee7b7', '#34d399', '#10b981', '#059669']
@@ -307,9 +307,9 @@ const DonutChart: React.FC<DonutChartProps> = ({
           const isHovered = hoveredSegment?.id === segment.id
           const isSelected = selectedSegments.some(s => s.id === segment.id)
           
-          // Determine border color based on percentage - only green for above average
+          // Determine border color based on percentage - only yellow for above average
           const getBorderColor = () => {
-            if (segment.percentage > 100) return '#22c55e' // green-500 for above average
+            if (segment.percentage > 100) return '#eab308' // yellow-500 for above average
             return 'white' // white for average and below
           }
           
@@ -586,7 +586,7 @@ export default function ApproachAvoidanceClient() {
                           <div className="flex justify-between items-center">
                             <span className="text-xs font-medium">vs Average</span>
                             <span className={`text-xs font-mono font-bold ${
-                              segment.percentage > 100 ? 'text-green-600' : 
+                              segment.percentage > 100 ? 'text-yellow-600' : 
                               segment.percentage < 95 ? 'text-orange-600' : 
                               'text-muted-foreground'
                             }`}>
@@ -596,7 +596,7 @@ export default function ApproachAvoidanceClient() {
                           <div className="flex justify-between items-center">
                             <span className="text-xs font-medium">Status</span>
                             <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                              segment.percentage > 110 ? 'bg-green-100 text-green-800' :
+                              segment.percentage > 110 ? 'bg-yellow-100 text-yellow-800' :
                               segment.percentage > 100 ? 'bg-blue-100 text-blue-800' :
                               segment.percentage < 85 ? 'bg-red-100 text-red-800' :
                               segment.percentage < 95 ? 'bg-orange-100 text-orange-800' :
