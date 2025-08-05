@@ -266,10 +266,10 @@ const DonutChart: React.FC<DonutChartProps> = ({
   selectedSegments 
 }) => {
   const total = system.segments.length
-  const radius = 86 // 144% of original 60 (120% more than current)
-  const innerRadius = 50 // 144% of original 35 (120% more than current)
-  const centerX = 115 // 144% of original 80 (120% more than current)
-  const centerY = 115 // 144% of original 80 (120% more than current)
+  const radius = 55      // 80% of 69
+  const innerRadius = 32 // 80% of 40
+  const centerX = 74     // 80% of 92
+  const centerY = 74     // 80% of 92
   
   const colors = colorPalettes[system.color as keyof typeof colorPalettes]
 
@@ -300,7 +300,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
 
   return (
     <div className="relative">
-      <svg width="230" height="230" className="drop-shadow-sm">
+      <svg width="148" height="148" className="drop-shadow-sm">
         {system.segments.map((segment, index) => {
           const startAngle = (index * 360) / total
           const endAngle = ((index + 1) * 360) / total
@@ -309,7 +309,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
           
           // Determine border color based on percentage - only yellow for above average
           const getBorderColor = () => {
-            if (segment.percentage > 100) return '#eab308' // yellow-500 for above average
+            if (segment.percentage > 100) return '#22c55e' // green-500 for above average
             return 'white' // white for average and below
           }
           
@@ -381,10 +381,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
       
       {/* Center title */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="text-center">
-          <system.icon className="h-8 w-8 mx-auto mb-1 text-primary" />
-          <h3 className="font-semibold text-sm leading-tight">{system.title}</h3>
-        </div>
+        <system.icon className="h-6 w-6 text-primary" />
       </div>
     </div>
   )
@@ -488,6 +485,12 @@ export default function ApproachAvoidanceClient() {
             const x = Math.cos(angleRad) * radius
             const y = Math.sin(angleRad) * radius
 
+            // Determine text alignment based on angle
+            const isTextOnLeft = angle > 90 && angle < 270
+            const textPositionClasses = isTextOnLeft
+              ? 'right-full mr-2 text-right'
+              : 'left-full ml-2 text-left'
+
             return (
               <div
                 key={system.id}
@@ -498,13 +501,19 @@ export default function ApproachAvoidanceClient() {
                   transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
                 }}
               >
-                <DonutChart
-                  system={system}
-                  onSegmentHover={(segment) => handleSegmentHover(segment, system.id)}
-                  onSegmentClick={(segment) => handleSegmentClick(segment, system.id)}
-                  hoveredSegment={hoveredSegment}
-                  selectedSegments={selectedSegments}
-                />
+                <div className="relative flex items-center justify-center">
+                  <DonutChart
+                    system={system}
+                    onSegmentHover={(segment) => handleSegmentHover(segment, system.id)}
+                    onSegmentClick={(segment) => handleSegmentClick(segment, system.id)}
+                    hoveredSegment={hoveredSegment}
+                    selectedSegments={selectedSegments}
+                  />
+                  <div className={`absolute top-0 w-44 ${textPositionClasses}`}>
+                    <h3 className="font-semibold text-sm leading-tight">{system.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-1">{system.description}</p>
+                  </div>
+                </div>
               </div>
             )
           })}
