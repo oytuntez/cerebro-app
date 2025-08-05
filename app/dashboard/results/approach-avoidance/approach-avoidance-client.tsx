@@ -15,7 +15,7 @@ const approachAvoidanceSystems = [
     icon: Target,
     description: 'Core mesolimbic reward/go circuits',
     angle: 315, // Top-left
-    color: 'orange',
+    color: 'red',
     segments: [
       {
         id: 'vta-nac',
@@ -160,7 +160,7 @@ const approachAvoidanceSystems = [
     icon: Brain,
     description: 'Valuation and executive integration',
     angle: 225, // Bottom-left
-    color: 'red',
+    color: 'orange',
     segments: [
       {
         id: 'valuation-drive',
@@ -234,11 +234,11 @@ const approachAvoidanceSystems = [
 
 // Color palettes for each system
 const colorPalettes = {
-  orange: ['#fed7aa', '#fdba74', '#fb923c', '#f97316', '#ea580c'],
-  blue: ['#bfdbfe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb'],
-  yellow: ['#fef08a', '#fde047', '#facc15', '#eab308', '#ca8a04'],
-  purple: ['#e9d5ff', '#d8b4fe', '#c084fc', '#a855f7', '#9333ea'],
-  red: ['#fecaca', '#fca5a5', '#f87171', '#ef4444', '#dc2626'],
+  orange: ['#ffcccc', '#ff9999', '#ff6666', '#ff3333', '#cc0000'],
+  blue: ['#b8e066', '#93c233', '#6da300', '#578200', '#416200'],
+  yellow: ['#a684d9', '#8159b3', '#5d2e8c', '#4a256f', '#361b52'],
+  purple: ['#9999ff', '#6666ff', '#0000ff', '#0000cc', '#000099'], // Shades of #0000FF (Blue)
+  red: ['#ffd699', '#ffc266', '#ffa500', '#cc8400', '#996300'], // Shades of #FFA500 (Orange)
   teal: ['#a7f3d0', '#6ee7b7', '#34d399', '#10b981', '#059669']
 }
 
@@ -266,12 +266,16 @@ const DonutChart: React.FC<DonutChartProps> = ({
   selectedSegments 
 }) => {
   const total = system.segments.length
-  const radius = 86 // 144% of original 60 (120% more than current)
-  const innerRadius = 50 // 144% of original 35 (120% more than current)
-  const centerX = 115 // 144% of original 80 (120% more than current)
-  const centerY = 115 // 144% of original 80 (120% more than current)
+  const radius = 55      // 80% of 69
+  const innerRadius = 32 // 80% of 40
+  const centerX = 74     // 80% of 92
+  const centerY = 74     // 80% of 92
   
   const colors = colorPalettes[system.color as keyof typeof colorPalettes]
+
+  const getInitials = (name: string) => {
+    return name.match(/\b(\w)/g)?.join('').toUpperCase() ?? ''
+  }
 
   const createArcPath = (startAngle: number, endAngle: number, innerR: number, outerR: number) => {
     const start = polarToCartesian(centerX, centerY, outerR, endAngle)
@@ -300,7 +304,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
 
   return (
     <div className="relative">
-      <svg width="230" height="230" className="drop-shadow-sm">
+      <svg width="148" height="148" className="drop-shadow-sm">
         {system.segments.map((segment, index) => {
           const startAngle = (index * 360) / total
           const endAngle = ((index + 1) * 360) / total
@@ -309,8 +313,8 @@ const DonutChart: React.FC<DonutChartProps> = ({
           
           // Determine border color based on percentage - only yellow for above average
           const getBorderColor = () => {
-            if (segment.percentage > 100) return '#eab308' // yellow-500 for above average
-            return 'white' // white for average and below
+            if (segment.percentage > 100) return 'white' // Above average
+            return 'grey' // Below or at average
           }
           
           return (
@@ -373,7 +377,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
                 filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.8))',
               }}
             >
-              {segment.name.length > 12 ? segment.name.substring(0, 12) + '...' : segment.name}
+              {getInitials(segment.name)}
             </text>
           )
         })}
@@ -381,10 +385,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
       
       {/* Center title */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="text-center">
-          <system.icon className="h-8 w-8 mx-auto mb-1 text-primary" />
-          <h3 className="font-semibold text-sm leading-tight">{system.title}</h3>
-        </div>
+        <system.icon className="h-6 w-6 text-primary" />
       </div>
     </div>
   )
@@ -447,7 +448,7 @@ export default function ApproachAvoidanceClient() {
         return prev.filter(s => s.id !== segment.id)
       } else {
         // Add to selection
-        return [...prev, segment]
+        return [segment, ...prev]
       }
     })
     setHoveredSystem(systemId)
@@ -488,6 +489,12 @@ export default function ApproachAvoidanceClient() {
             const x = Math.cos(angleRad) * radius
             const y = Math.sin(angleRad) * radius
 
+            // Determine text alignment based on angle
+            const isTextOnLeft = angle > 90 && angle < 270
+            const textPositionClasses = isTextOnLeft
+              ? 'right-full mr-2 text-right'
+              : 'left-full ml-2 text-left'
+
             return (
               <div
                 key={system.id}
@@ -498,13 +505,19 @@ export default function ApproachAvoidanceClient() {
                   transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
                 }}
               >
-                <DonutChart
-                  system={system}
-                  onSegmentHover={(segment) => handleSegmentHover(segment, system.id)}
-                  onSegmentClick={(segment) => handleSegmentClick(segment, system.id)}
-                  hoveredSegment={hoveredSegment}
-                  selectedSegments={selectedSegments}
-                />
+                <div className="relative flex justify-center">
+                  <DonutChart
+                    system={system}
+                    onSegmentHover={(segment) => handleSegmentHover(segment, system.id)}
+                    onSegmentClick={(segment) => handleSegmentClick(segment, system.id)}
+                    hoveredSegment={hoveredSegment}
+                    selectedSegments={selectedSegments}
+                  />
+                  <div className={`absolute top-0 w-44 ${textPositionClasses}`}>
+                    <h3 className="font-semibold text-sm leading-tight">{system.title}</h3>
+                    <p className="text-xs text-muted-foreground mt-1">{system.description}</p>
+                  </div>
+                </div>
               </div>
             )
           })}
@@ -556,21 +569,27 @@ export default function ApproachAvoidanceClient() {
                   )
                   if (!system) return null
 
+                  const segmentIndex = system.segments.findIndex(s => s.id === segment.id)
+                  const segmentColor = segmentIndex !== -1 
+                    ? colorPalettes[system.color as keyof typeof colorPalettes][segmentIndex % colorPalettes[system.color as keyof typeof colorPalettes].length]
+                    : '#ccc' // Fallback color
+
                   return (
-                    <Card key={segment.id} className="bg-muted/20">
-                      <CardHeader className="pb-3">
+                    <Card key={segment.id} className="bg-muted/20 overflow-hidden">
+                      <div className="h-2" style={{ backgroundColor: segmentColor }} />
+                      <CardHeader className="p-4 pb-2">
                         <div className="flex items-center gap-2">
                           <div 
                             className="w-4 h-4 rounded-full" 
                             style={{ 
-                              backgroundColor: colorPalettes[system.color as keyof typeof colorPalettes][0] 
+                              backgroundColor: segmentColor
                             }}
                           />
                           <CardTitle className="text-sm">{segment.name}</CardTitle>
                         </div>
                         <CardDescription className="text-xs">{system.title}</CardDescription>
                       </CardHeader>
-                      <CardContent className="space-y-3">
+                      <CardContent className="space-y-3 p-4 pt-0">
                         <p className="text-xs text-muted-foreground">
                           {segment.description}
                         </p>
@@ -586,27 +605,11 @@ export default function ApproachAvoidanceClient() {
                           <div className="flex justify-between items-center">
                             <span className="text-xs font-medium">vs Average</span>
                             <span className={`text-xs font-mono font-bold ${
-                              segment.percentage > 100 ? 'text-yellow-600' : 
+                              segment.percentage > 100 ? 'text-green-600' : 
                               segment.percentage < 95 ? 'text-orange-600' : 
                               'text-muted-foreground'
                             }`}>
                               {segment.percentage}%
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-medium">Status</span>
-                            <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                              segment.percentage > 110 ? 'bg-yellow-100 text-yellow-800' :
-                              segment.percentage > 100 ? 'bg-blue-100 text-blue-800' :
-                              segment.percentage < 85 ? 'bg-red-100 text-red-800' :
-                              segment.percentage < 95 ? 'bg-orange-100 text-orange-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>
-                              {segment.percentage > 110 ? 'High' :
-                               segment.percentage > 100 ? 'Above' :
-                               segment.percentage < 85 ? 'Very Low' :
-                               segment.percentage < 95 ? 'Below' :
-                               'Normal'}
                             </span>
                           </div>
                         </div>
