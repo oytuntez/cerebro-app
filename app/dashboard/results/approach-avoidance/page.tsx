@@ -11,6 +11,7 @@ import { AppBar } from '@/app/dashboard/components/app-bar'
 import { AppPanel } from '@/app/dashboard/components/app-panel'
 import { getUserAPI } from '@/queries/server/users'
 import ApproachAvoidanceClient from './approach-avoidance-client'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 interface ApproachAvoidancePageProps {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -83,6 +84,9 @@ export default async function ApproachAvoidancePage({ searchParams }: ApproachAv
               <div>
                 <Title translate="no">Approach vs Avoidance Systems</Title>
                 <Description translate="no">Exploring the neural circuits of motivation and threat response</Description>
+              </div>
+              <div>
+                <ThemeToggle />
               </div>
             </div>
             <Separator />
