@@ -15,7 +15,7 @@ const approachAvoidanceSystems = [
     icon: Target,
     description: 'Core mesolimbic reward/go circuits',
     angle: 315, // Top-left
-    color: 'red',
+    color: 'orange',
     segments: [
       {
         id: 'vta-nac',
@@ -160,7 +160,7 @@ const approachAvoidanceSystems = [
     icon: Brain,
     description: 'Valuation and executive integration',
     angle: 225, // Bottom-left
-    color: 'orange',
+    color: 'red',
     segments: [
       {
         id: 'valuation-drive',
@@ -234,11 +234,11 @@ const approachAvoidanceSystems = [
 
 // Color palettes for each system
 const colorPalettes = {
-  orange: ['#ffcccc', '#ff9999', '#ff6666', '#ff3333', '#cc0000'],
-  blue: ['#b8e066', '#93c233', '#6da300', '#578200', '#416200'],
-  yellow: ['#a684d9', '#8159b3', '#5d2e8c', '#4a256f', '#361b52'],
-  purple: ['#9999ff', '#6666ff', '#0000ff', '#0000cc', '#000099'], // Shades of #0000FF (Blue)
-  red: ['#ffd699', '#ffc266', '#ffa500', '#cc8400', '#996300'], // Shades of #FFA500 (Orange)
+  orange: ['#fed7aa', '#fdba74', '#fb923c', '#f97316', '#ea580c'],
+  blue: ['#bfdbfe', '#93c5fd', '#60a5fa', '#3b82f6', '#2563eb'],
+  yellow: ['#fef08a', '#fde047', '#facc15', '#eab308', '#ca8a04'],
+  purple: ['#e9d5ff', '#d8b4fe', '#c084fc', '#a855f7', '#9333ea'],
+  red: ['#fecaca', '#fca5a5', '#f87171', '#ef4444', '#dc2626'],
   teal: ['#a7f3d0', '#6ee7b7', '#34d399', '#10b981', '#059669']
 }
 
@@ -258,33 +258,29 @@ interface DonutChartProps {
   selectedSegments: DonutSegment[]
 }
 
-const DonutChart: React.FC<DonutChartProps> = ({ 
-  system, 
-  onSegmentHover, 
-  onSegmentClick, 
-  hoveredSegment, 
-  selectedSegments 
+const DonutChart: React.FC<DonutChartProps> = ({
+  system,
+  onSegmentHover,
+  onSegmentClick,
+  hoveredSegment,
+  selectedSegments
 }) => {
   const total = system.segments.length
-  const radius = 55      // 80% of 69
-  const innerRadius = 32 // 80% of 40
-  const centerX = 74     // 80% of 92
-  const centerY = 74     // 80% of 92
-  
-  const colors = colorPalettes[system.color as keyof typeof colorPalettes]
+  const radius = 86 // 144% of original 60 (120% more than current)
+  const innerRadius = 50 // 144% of original 35 (120% more than current)
+  const centerX = 115 // 144% of original 80 (120% more than current)
+  const centerY = 115 // 144% of original 80 (120% more than current)
 
-  const getInitials = (name: string) => {
-    return name.match(/\b(\w)/g)?.join('').toUpperCase() ?? ''
-  }
+  const colors = colorPalettes[system.color as keyof typeof colorPalettes]
 
   const createArcPath = (startAngle: number, endAngle: number, innerR: number, outerR: number) => {
     const start = polarToCartesian(centerX, centerY, outerR, endAngle)
     const end = polarToCartesian(centerX, centerY, outerR, startAngle)
     const innerStart = polarToCartesian(centerX, centerY, innerR, endAngle)
     const innerEnd = polarToCartesian(centerX, centerY, innerR, startAngle)
-    
+
     const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1'
-    
+
     return [
       'M', start.x, start.y,
       'A', outerR, outerR, 0, largeArcFlag, 0, end.x, end.y,
@@ -304,19 +300,19 @@ const DonutChart: React.FC<DonutChartProps> = ({
 
   return (
     <div className="relative">
-      <svg width="148" height="148" className="drop-shadow-sm">
+      <svg width="230" height="230" className="drop-shadow-sm">
         {system.segments.map((segment, index) => {
           const startAngle = (index * 360) / total
           const endAngle = ((index + 1) * 360) / total
           const isHovered = hoveredSegment?.id === segment.id
           const isSelected = selectedSegments.some(s => s.id === segment.id)
-          
+
           // Determine border color based on percentage - only yellow for above average
           const getBorderColor = () => {
-            if (segment.percentage > 100) return 'white' // Above average
-            return 'grey' // Below or at average
+            if (segment.percentage > 100) return '#eab308' // yellow-500 for above average
+            return 'white' // white for average and below
           }
-          
+
           return (
             <TooltipProvider key={segment.id}>
               <Tooltip>
@@ -349,14 +345,14 @@ const DonutChart: React.FC<DonutChartProps> = ({
             </TooltipProvider>
           )
         })}
-        
+
         {/* Segment names for hovered/selected segments */}
         {system.segments.map((segment, index) => {
           const isHovered = hoveredSegment?.id === segment.id
           const isSelected = selectedSegments.some(s => s.id === segment.id)
-          
+
           if (!isHovered && !isSelected) return null
-          
+
           const startAngle = (index * 360) / total
           const endAngle = ((index + 1) * 360) / total
           const midAngle = (startAngle + endAngle) / 2
@@ -364,7 +360,7 @@ const DonutChart: React.FC<DonutChartProps> = ({
           const textAngle = (midAngle - 90) * Math.PI / 180
           const textX = centerX + Math.cos(textAngle) * textRadius
           const textY = centerY + Math.sin(textAngle) * textRadius
-          
+
           return (
             <text
               key={`text-${segment.id}`}
@@ -377,15 +373,18 @@ const DonutChart: React.FC<DonutChartProps> = ({
                 filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.8))',
               }}
             >
-              {getInitials(segment.name)}
+              {segment.name.length > 12 ? segment.name.substring(0, 12) + '...' : segment.name}
             </text>
           )
         })}
       </svg>
-      
+
       {/* Center title */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <system.icon className="h-6 w-6 text-primary" />
+        <div className="text-center">
+          <system.icon className="h-8 w-8 mx-auto mb-1 text-primary" />
+          <h3 className="font-semibold text-sm leading-tight">{system.title}</h3>
+        </div>
       </div>
     </div>
   )
@@ -417,7 +416,7 @@ export default function ApproachAvoidanceClient() {
     handleResize() // Initial check
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('resize', handleResize)
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
@@ -448,7 +447,7 @@ export default function ApproachAvoidanceClient() {
         return prev.filter(s => s.id !== segment.id)
       } else {
         // Add to selection
-        return [segment, ...prev]
+        return [...prev, segment]
       }
     })
     setHoveredSystem(systemId)
@@ -456,7 +455,7 @@ export default function ApproachAvoidanceClient() {
 
   // Get the current active segment and its system (prioritize hovered, fallback to first selected)
   const activeSegment = hoveredSegment || (selectedSegments.length > 0 ? selectedSegments[0] : null)
-  const activeSystem = activeSegment ? approachAvoidanceSystems.find(sys => 
+  const activeSystem = activeSegment ? approachAvoidanceSystems.find(sys =>
     sys.segments.some(seg => seg.id === activeSegment.id)
   ) : null
 
@@ -470,7 +469,7 @@ export default function ApproachAvoidanceClient() {
           {/* Brain Model in Center */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-[300px] h-[300px] md:w-[400px] md:h-[400px] z-10 rounded-full overflow-hidden bg-background/50 backdrop-blur-sm shadow-2xl">
-              <BrainViewerWrapper 
+              <BrainViewerWrapper
                 showLeftHemi={true}
                 showRightHemi={true}
                 transparency={0.9}
@@ -489,12 +488,6 @@ export default function ApproachAvoidanceClient() {
             const x = Math.cos(angleRad) * radius
             const y = Math.sin(angleRad) * radius
 
-            // Determine text alignment based on angle
-            const isTextOnLeft = angle > 90 && angle < 270
-            const textPositionClasses = isTextOnLeft
-              ? 'right-full mr-2 text-right'
-              : 'left-full ml-2 text-left'
-
             return (
               <div
                 key={system.id}
@@ -505,19 +498,13 @@ export default function ApproachAvoidanceClient() {
                   transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
                 }}
               >
-                <div className="relative flex justify-center">
-                  <DonutChart
-                    system={system}
-                    onSegmentHover={(segment) => handleSegmentHover(segment, system.id)}
-                    onSegmentClick={(segment) => handleSegmentClick(segment, system.id)}
-                    hoveredSegment={hoveredSegment}
-                    selectedSegments={selectedSegments}
-                  />
-                  <div className={`absolute top-0 w-44 ${textPositionClasses}`}>
-                    <h3 className="font-semibold text-sm leading-tight">{system.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-1">{system.description}</p>
-                  </div>
-                </div>
+                <DonutChart
+                  system={system}
+                  onSegmentHover={(segment) => handleSegmentHover(segment, system.id)}
+                  onSegmentClick={(segment) => handleSegmentClick(segment, system.id)}
+                  hoveredSegment={hoveredSegment}
+                  selectedSegments={selectedSegments}
+                />
               </div>
             )
           })}
@@ -544,7 +531,7 @@ export default function ApproachAvoidanceClient() {
               )}
             </div>
             <p className="text-sm text-muted-foreground mt-1">
-              {selectedSegments.length > 0 
+              {selectedSegments.length > 0
                 ? `${selectedSegments.length} region${selectedSegments.length > 1 ? 's' : ''} selected`
                 : 'Click on donut segments to view details'
               }
@@ -564,36 +551,30 @@ export default function ApproachAvoidanceClient() {
             ) : (
               <div className="space-y-4 p-4">
                 {selectedSegments.map((segment) => {
-                  const system = approachAvoidanceSystems.find(sys => 
+                  const system = approachAvoidanceSystems.find(sys =>
                     sys.segments.some(seg => seg.id === segment.id)
                   )
                   if (!system) return null
 
-                  const segmentIndex = system.segments.findIndex(s => s.id === segment.id)
-                  const segmentColor = segmentIndex !== -1 
-                    ? colorPalettes[system.color as keyof typeof colorPalettes][segmentIndex % colorPalettes[system.color as keyof typeof colorPalettes].length]
-                    : '#ccc' // Fallback color
-
                   return (
-                    <Card key={segment.id} className="bg-muted/20 overflow-hidden">
-                      <div className="h-2" style={{ backgroundColor: segmentColor }} />
-                      <CardHeader className="p-4 pb-2">
+                    <Card key={segment.id} className="bg-muted/20">
+                      <CardHeader className="pb-3">
                         <div className="flex items-center gap-2">
-                          <div 
-                            className="w-4 h-4 rounded-full" 
-                            style={{ 
-                              backgroundColor: segmentColor
+                          <div
+                            className="w-4 h-4 rounded-full"
+                            style={{
+                              backgroundColor: colorPalettes[system.color as keyof typeof colorPalettes][0]
                             }}
                           />
                           <CardTitle className="text-sm">{segment.name}</CardTitle>
                         </div>
                         <CardDescription className="text-xs">{system.title}</CardDescription>
                       </CardHeader>
-                      <CardContent className="space-y-3 p-4 pt-0">
+                      <CardContent className="space-y-3">
                         <p className="text-xs text-muted-foreground">
                           {segment.description}
                         </p>
-                        
+
                         {/* Volume and Comparison Data */}
                         <div className="bg-background/50 rounded-lg p-2 space-y-1">
                           <div className="flex justify-between items-center">
@@ -605,27 +586,43 @@ export default function ApproachAvoidanceClient() {
                           <div className="flex justify-between items-center">
                             <span className="text-xs font-medium">vs Average</span>
                             <span className={`text-xs font-mono font-bold ${
-                              segment.percentage > 100 ? 'text-green-600' : 
-                              segment.percentage < 95 ? 'text-orange-600' : 
+                              segment.percentage > 100 ? 'text-yellow-600' :
+                              segment.percentage < 95 ? 'text-orange-600' :
                               'text-muted-foreground'
                             }`}>
                               {segment.percentage}%
                             </span>
                           </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs font-medium">Status</span>
+                            <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                              segment.percentage > 110 ? 'bg-yellow-100 text-yellow-800' :
+                              segment.percentage > 100 ? 'bg-blue-100 text-blue-800' :
+                              segment.percentage < 85 ? 'bg-red-100 text-red-800' :
+                              segment.percentage < 95 ? 'bg-orange-100 text-orange-800' :
+                              'bg-gray-100 text-gray-800'
+                            }`}>
+                              {segment.percentage > 110 ? 'High' :
+                               segment.percentage > 100 ? 'Above' :
+                               segment.percentage < 85 ? 'Very Low' :
+                               segment.percentage < 95 ? 'Below' :
+                               'Normal'}
+                            </span>
+                          </div>
                         </div>
-                        
+
                         <div className="flex gap-1">
-                          <Button 
-                            size="sm" 
-                            variant="ghost" 
+                          <Button
+                            size="sm"
+                            variant="ghost"
                             className="flex-1 text-xs h-7"
                             onClick={() => scrollToSection(system.id)}
                           >
                             Details
                           </Button>
-                          <Button 
-                            size="sm" 
-                            variant="ghost" 
+                          <Button
+                            size="sm"
+                            variant="ghost"
                             className="text-xs h-7 px-2"
                             onClick={() => {
                               setSelectedSegments(prev => prev.filter(s => s.id !== segment.id))
@@ -648,7 +645,7 @@ export default function ApproachAvoidanceClient() {
       <div className="space-y-16 mt-16">
         {approachAvoidanceSystems.map((system) => {
           const Icon = system.icon
-          
+
           return (
             <section key={system.id} id={system.id} className="scroll-mt-24">
               <Card>
@@ -668,10 +665,10 @@ export default function ApproachAvoidanceClient() {
                       <ul className="space-y-2">
                         {system.segments.map((segment, idx) => (
                           <li key={idx} className="flex items-start gap-2">
-                            <div 
-                              className="h-4 w-4 rounded-full mt-0.5" 
-                              style={{ 
-                                backgroundColor: colorPalettes[system.color as keyof typeof colorPalettes][idx % colorPalettes[system.color as keyof typeof colorPalettes].length] 
+                            <div
+                              className="h-4 w-4 rounded-full mt-0.5"
+                              style={{
+                                backgroundColor: colorPalettes[system.color as keyof typeof colorPalettes][idx % colorPalettes[system.color as keyof typeof colorPalettes].length]
                               }}
                             />
                             <div>
@@ -685,21 +682,21 @@ export default function ApproachAvoidanceClient() {
                     <div>
                       <h3 className="font-semibold mb-3">Clinical Relevance</h3>
                       <p className="text-sm text-muted-foreground">
-                        This system plays a crucial role in approach-avoidance decision making and is implicated 
-                        in various psychiatric conditions. Understanding individual variations helps in 
+                        This system plays a crucial role in approach-avoidance decision making and is implicated
+                        in various psychiatric conditions. Understanding individual variations helps in
                         personalized treatment approaches and behavioral interventions.
                       </p>
                     </div>
                   </div>
-                  
+
                   <Separator className="my-6" />
-                  
+
                   <div>
                     <h3 className="font-semibold mb-3">System Integration</h3>
                     <div className="prose prose-sm max-w-none text-muted-foreground">
                       <p>
-                        The {system.title.toLowerCase()} integrates with other neural circuits to form 
-                        a comprehensive decision-making network. This system's connectivity patterns 
+                        The {system.title.toLowerCase()} integrates with other neural circuits to form
+                        a comprehensive decision-making network. This system's connectivity patterns
                         determine how approach and avoidance behaviors are balanced in real-world situations.
                       </p>
                     </div>
