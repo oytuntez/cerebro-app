@@ -8,10 +8,10 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'Cerebro',
-  title: 'Cerebro',
+  name: 'Brain Yes',
+  title: 'Brain Yes',
   description:
-    'Cerebro is a platform that helps you understand your brain.',
+    'Brain Yes is a platform that helps you understand your brain.',
   symbol: 'Activity', // LucideIcon
 }
 

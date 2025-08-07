@@ -1,6 +1,6 @@
 {
   "name": "cerebro-app",
-  "description": "Cerebro app with dashboard and REST API backend",
+  "description": "Brain Yes app with dashboard and REST API backend",
   "version": "0.1.0",
   "private": true,
   "scripts": {

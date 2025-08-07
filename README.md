@@ -1,4 +1,4 @@
-# Cerebro App - MRI Engine for Brain Insights
+# Brain Yes App - MRI Engine for Brain Insights
 
 A modern dashboard application for visualizing and analyzing brain MRI data, powered by the cerebro-engine processing pipeline.
 
