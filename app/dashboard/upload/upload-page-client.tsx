@@ -9,7 +9,13 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 import { toast } from '@/components/ui/use-toast'
 
 interface UploadFile {
@@ -25,7 +31,7 @@ export default function UploadPageClient() {
   const [uploading, setUploading] = useState(false)
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const validFiles = acceptedFiles.filter(file => {
+    const validFiles = acceptedFiles.filter((file) => {
       const isCompressed = file.name.endsWith('.nii.gz')
       const isUncompressed = file.name.endsWith('.nii') && !isCompressed
 
@@ -48,13 +54,13 @@ export default function UploadPageClient() {
       return true
     })
 
-    const newFiles = validFiles.map(file => ({
+    const newFiles = validFiles.map((file) => ({
       file,
       progress: 0,
       status: 'pending' as const,
     }))
 
-    setFiles(prev => [...prev, ...newFiles])
+    setFiles((prev) => [...prev, ...newFiles])
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -67,7 +73,7 @@ export default function UploadPageClient() {
   })
 
   const removeFile = (index: number) => {
-    setFiles(prev => prev.filter((_, i) => i !== index))
+    setFiles((prev) => prev.filter((_, i) => i !== index))
   }
 
   const uploadFiles = async () => {
@@ -78,9 +84,9 @@ export default function UploadPageClient() {
       if (uploadFile.status !== 'pending') continue
 
       // Update status to uploading
-      setFiles(prev => prev.map((f, idx) =>
-        idx === i ? { ...f, status: 'uploading' } : f
-      ))
+      setFiles((prev) =>
+        prev.map((f, idx) => (idx === i ? { ...f, status: 'uploading' } : f))
+      )
 
       const formData = new FormData()
       formData.append('files', uploadFile.file)
@@ -93,9 +99,9 @@ export default function UploadPageClient() {
         xhr.upload.addEventListener('progress', (event) => {
           if (event.lengthComputable) {
             const progress = Math.round((event.loaded / event.total) * 100)
-            setFiles(prev => prev.map((f, idx) =>
-              idx === i ? { ...f, progress } : f
-            ))
+            setFiles((prev) =>
+              prev.map((f, idx) => (idx === i ? { ...f, progress } : f))
+            )
           }
         })
 
@@ -103,10 +109,12 @@ export default function UploadPageClient() {
         const uploadPromise = new Promise<Response>((resolve, reject) => {
           xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 300) {
-              resolve(new Response(xhr.responseText, {
-                status: xhr.status,
-                statusText: xhr.statusText,
-              }))
+              resolve(
+                new Response(xhr.responseText, {
+                  status: xhr.status,
+                  statusText: xhr.statusText,
+                })
+              )
             } else {
               reject(new Error(`Upload failed: ${xhr.statusText}`))
             }
@@ -121,31 +129,39 @@ export default function UploadPageClient() {
         const data = await response.json()
 
         if (data.success) {
-          setFiles(prev => prev.map((f, idx) =>
-            idx === i ? { ...f, status: 'completed', progress: 100 } : f
-          ))
+          setFiles((prev) =>
+            prev.map((f, idx) =>
+              idx === i ? { ...f, status: 'completed', progress: 100 } : f
+            )
+          )
         } else {
           throw new Error(data.errors?.[0]?.error || 'Upload failed')
         }
       } catch (error) {
-        setFiles(prev => prev.map((f, idx) =>
-          idx === i ? {
-            ...f,
-            status: 'error',
-            error: error instanceof Error ? error.message : 'Upload failed'
-          } : f
-        ))
+        setFiles((prev) =>
+          prev.map((f, idx) =>
+            idx === i
+              ? {
+                  ...f,
+                  status: 'error',
+                  error:
+                    error instanceof Error ? error.message : 'Upload failed',
+                }
+              : f
+          )
+        )
       }
     }
 
     setUploading(false)
 
     // Show success message if any files uploaded successfully
-    const successCount = files.filter(f => f.status === 'completed').length
+    const successCount = files.filter((f) => f.status === 'completed').length
     if (successCount > 0) {
       toast({
         title: 'Upload complete',
-        description: 'We are now processing your raw MRI. This may take a couple hours, we will notify you via email when your brain is ready to explore!',
+        description:
+          'We are now processing your raw MRI. This may take a couple hours, we will notify you via email when your brain is ready to explore!',
       })
 
       // Redirect to scans page after a delay
@@ -155,33 +171,28 @@ export default function UploadPageClient() {
     }
   }
 
-  const pendingFiles = files.filter(f => f.status === 'pending').length
+  const pendingFiles = files.filter((f) => f.status === 'pending').length
   const hasFiles = files.length > 0
 
   return (
     <div className="space-y-8">
       <div
         {...getRootProps()}
-        className={`
-          border-2 border-dashed rounded-lg p-12 text-center cursor-pointer
-          transition-colors duration-200
-          ${isDragActive ? 'border-primary bg-primary/5' : 'border-muted-foreground/25'}
-          hover:border-primary hover:bg-primary/5
-        `}
+        className={`cursor-pointer rounded-lg border-2 border-dashed p-12 text-center transition-colors duration-200 ${isDragActive ? 'border-primary bg-primary/5' : 'border-muted-foreground/25'} hover:border-primary hover:bg-primary/5`}
       >
         <input {...getInputProps()} />
-        <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+        <Upload className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
         {isDragActive ? (
           <p className="text-lg font-medium">Drop the files here...</p>
         ) : (
           <>
-            <p className="text-lg font-medium mb-1">
+            <p className="mb-1 text-lg font-medium">
               Drag & drop MRI files here
             </p>
             <p className="text-sm text-muted-foreground">
               or click to select files
             </p>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="mt-2 text-xs text-muted-foreground">
               Only .nii or .nii.gz files, max 1GB each
             </p>
           </>
@@ -198,10 +209,13 @@ export default function UploadPageClient() {
           </CardHeader>
           <CardContent className="space-y-4">
             {files.map((uploadFile, index) => (
-              <div key={index} className="flex items-center gap-4 p-4 border rounded-lg">
-                <FileText className="h-8 w-8 text-muted-foreground shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">
+              <div
+                key={index}
+                className="flex items-center gap-4 rounded-lg border p-4"
+              >
+                <FileText className="h-8 w-8 shrink-0 text-muted-foreground" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium">
                     {uploadFile.file.name}
                   </p>
                   <p className="text-xs text-muted-foreground">
@@ -211,12 +225,16 @@ export default function UploadPageClient() {
                     <Progress value={uploadFile.progress} className="mt-2" />
                   )}
                   {uploadFile.status === 'error' && (
-                    <p className="text-xs text-destructive mt-1">{uploadFile.error}</p>
+                    <p className="mt-1 text-xs text-destructive">
+                      {uploadFile.error}
+                    </p>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
                   {uploadFile.status === 'completed' && (
-                    <span className="text-xs text-green-600 font-medium">Uploaded</span>
+                    <span className="text-xs font-medium text-green-600">
+                      Uploaded
+                    </span>
                   )}
                   {uploadFile.status === 'pending' && (
                     <Button
@@ -238,7 +256,9 @@ export default function UploadPageClient() {
                 disabled={uploading}
                 className="w-full"
               >
-                {uploading ? 'Uploading...' : `Upload ${pendingFiles} file${pendingFiles !== 1 ? 's' : ''}`}
+                {uploading
+                  ? 'Uploading...'
+                  : `Upload ${pendingFiles} file${pendingFiles !== 1 ? 's' : ''}`}
               </Button>
             )}
           </CardContent>
@@ -248,8 +268,10 @@ export default function UploadPageClient() {
       <Alert>
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          <strong>Processing Time:</strong> After upload, your MRI scan will be processed through our analysis pipeline.
-          This typically takes 1-2 hours. You'll receive an email notification when your results are ready.
+          <strong>Processing Time:</strong> After upload, your MRI scan will be
+          processed through our analysis pipeline. This typically takes 1-2
+          hours. You&apos;ll receive an email notification when your results are
+          ready.
         </AlertDescription>
       </Alert>
     </div>

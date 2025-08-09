@@ -17,7 +17,9 @@ interface ApproachAvoidancePageProps {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-export default async function ApproachAvoidancePage({ searchParams }: ApproachAvoidancePageProps) {
+export default async function ApproachAvoidancePage({
+  searchParams,
+}: ApproachAvoidancePageProps) {
   const { user } = await getUserAPI()
 
   if (!user) redirect('/auth/signin')
@@ -45,11 +47,14 @@ export default async function ApproachAvoidancePage({ searchParams }: ApproachAv
         <AppBar className="sticky left-0 top-0 z-10" />
         <AppPanel>
           <div className="flex flex-col">
-            <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
+            <main className="space-y-4 p-4 pb-36 sm:p-6 lg:p-8">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <Title translate="no">Approach vs Avoidance Systems</Title>
-                  <Description translate="no">Exploring the neural circuits of motivation and threat response</Description>
+                  <Description translate="no">
+                    Exploring the neural circuits of motivation and threat
+                    response
+                  </Description>
                 </div>
               </div>
               <Separator />
@@ -79,11 +84,14 @@ export default async function ApproachAvoidancePage({ searchParams }: ApproachAv
       <AppBar className="sticky left-0 top-0 z-10" />
       <AppPanel>
         <div className="flex flex-col">
-          <main className="space-y-4 p-4 sm:p-6 lg:p-8 pb-36">
+          <main className="space-y-4 p-4 pb-36 sm:p-6 lg:p-8">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <Title translate="no">Approach vs Avoidance Systems</Title>
-                <Description translate="no">Exploring the neural circuits of motivation and threat response</Description>
+                <Description translate="no">
+                  Exploring the neural circuits of motivation and threat
+                  response
+                </Description>
               </div>
               <div>
                 <ThemeToggle />

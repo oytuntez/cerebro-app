@@ -1,5 +1,5 @@
 // Main components
-export { default as BrainViewer } from './BrainViewerWorking';
+export { default as BrainViewer } from './BrainViewer';
 // Note: BrainMesh is not exported as it's only used internally by BrainViewer
 
 // Controls
@@ -21,4 +21,4 @@ export type {
   BrainData,
   BrainViewerProps,
   BrainControlsProps
-} from './types'; 
+} from './types';
