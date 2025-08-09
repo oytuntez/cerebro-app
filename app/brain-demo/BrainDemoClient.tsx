@@ -1,29 +1,29 @@
-'use client';
+'use client'
 
-import React, { useEffect } from 'react';
-import { Upload, Download, FileText } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { 
-  BrainViewer, 
-  BrainControls, 
-  useBrainData, 
-  useBrainControls 
-} from '@/components/brain-visualization';
+import React, { useEffect } from 'react'
+import { Upload, Download, FileText } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  BrainViewer,
+  BrainControls,
+  useBrainData,
+  useBrainControls,
+} from '@/components/brain-visualization'
 
 export default function BrainDemoClient() {
-  const { 
-    leftHemisphere, 
-    rightHemisphere, 
-    loading, 
-    error, 
-    loadFromFiles, 
+  const {
+    leftHemisphere,
+    rightHemisphere,
+    loading,
+    error,
+    loadFromFiles,
     loadFromUrls,
-    clearError 
-  } = useBrainData();
+    clearError,
+  } = useBrainData()
 
   const {
     showLeftHemi,
@@ -39,22 +39,24 @@ export default function BrainDemoClient() {
     toggleRegion,
     selectAllRegions,
     unselectAllRegions,
-    initializeRegions
-  } = useBrainControls({ leftHemisphere, rightHemisphere });
+    initializeRegions,
+  } = useBrainControls({ leftHemisphere, rightHemisphere })
 
   // Initialize regions when data loads
   useEffect(() => {
-    initializeRegions();
-  }, [initializeRegions]);
+    initializeRegions()
+  }, [initializeRegions])
 
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
+  const handleFileUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = event.target.files
     if (files && files.length > 0) {
-      await loadFromFiles(files);
+      await loadFromFiles(files)
       // Reset the input to allow re-uploading the same files
-      event.target.value = '';
+      event.target.value = ''
     }
-  };
+  }
 
   const loadDemoData = async () => {
     // Load demo data from the public directory
@@ -62,18 +64,21 @@ export default function BrainDemoClient() {
       leftAsc: '/lh.asc',
       rightAsc: '/rh.asc',
       leftAnnot: '/lh.custom_regions_de_ki.json',
-      rightAnnot: '/rh.custom_regions_de_ki.json'
-    });
-  };
+      rightAnnot: '/rh.custom_regions_de_ki.json',
+    })
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">Brain Visualization Demo</h1>
-          <p className="text-muted-foreground mt-2">
-            Interactive 3D brain surface visualization with region selection and controls
+          <h1 className="text-3xl font-bold tracking-tight">
+            Brain Visualization Demo
+          </h1>
+          <p className="mt-2 text-muted-foreground">
+            Interactive 3D brain surface visualization with region selection and
+            controls
           </p>
         </div>
 
@@ -93,12 +98,12 @@ export default function BrainDemoClient() {
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Upload className="w-5 h-5" />
+              <Upload className="h-5 w-5" />
               Load Brain Data
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="brain-files">Upload Brain Files</Label>
                 <Input
@@ -110,10 +115,11 @@ export default function BrainDemoClient() {
                   disabled={loading}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Upload .asc files (brain surfaces) and .annot/.json files (region annotations)
+                  Upload .asc files (brain surfaces) and .annot/.json files
+                  (region annotations)
                 </p>
               </div>
-              
+
               <div className="space-y-2">
                 <Label>Demo Data</Label>
                 <Button
@@ -122,7 +128,7 @@ export default function BrainDemoClient() {
                   variant="outline"
                   className="w-full"
                 >
-                  <Download className="w-4 h-4 mr-2" />
+                  <Download className="mr-2 h-4 w-4" />
                   Load Demo Brain Data
                 </Button>
                 <p className="text-xs text-muted-foreground">
@@ -132,9 +138,11 @@ export default function BrainDemoClient() {
             </div>
 
             {loading && (
-              <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="text-sm text-muted-foreground mt-2">Loading brain data...</p>
+              <div className="py-4 text-center">
+                <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Loading brain data...
+                </p>
               </div>
             )}
           </CardContent>
@@ -142,7 +150,7 @@ export default function BrainDemoClient() {
 
         {/* Main Content */}
         {(leftHemisphere || rightHemisphere) && (
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
             {/* Brain Viewer */}
             <div className="lg:col-span-3">
               <Card>
@@ -190,7 +198,7 @@ export default function BrainDemoClient() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <FileText className="w-5 h-5" />
+                <FileText className="h-5 w-5" />
                 Getting Started
               </CardTitle>
             </CardHeader>
@@ -198,17 +206,39 @@ export default function BrainDemoClient() {
               <div className="prose prose-sm max-w-none">
                 <h3>How to use the Brain Visualization:</h3>
                 <ol>
-                  <li><strong>Load Demo Data:</strong> Click "Load Demo Brain Data" to see the visualization in action</li>
-                  <li><strong>Upload Files:</strong> Upload your own .asc (surface) and .annot/.json (annotation) files</li>
-                  <li><strong>Interactive Controls:</strong> Use the control panel to toggle hemispheres, adjust transparency, and select brain regions</li>
-                  <li><strong>3D Navigation:</strong> Click and drag to rotate, scroll to zoom, right-click and drag to pan</li>
+                  <li>
+                    <strong>Load Demo Data:</strong> Click "Load Demo Brain
+                    Data" to see the visualization in action
+                  </li>
+                  <li>
+                    <strong>Upload Files:</strong> Upload your own .asc
+                    (surface) and .annot/.json (annotation) files
+                  </li>
+                  <li>
+                    <strong>Interactive Controls:</strong> Use the control panel
+                    to toggle hemispheres, adjust transparency, and select brain
+                    regions
+                  </li>
+                  <li>
+                    <strong>3D Navigation:</strong> Click and drag to rotate,
+                    scroll to zoom, right-click and drag to pan
+                  </li>
                 </ol>
-                
+
                 <h3>Supported File Formats:</h3>
                 <ul>
-                  <li><strong>.asc files:</strong> ASCII brain surface files (lh.asc for left, rh.asc for right)</li>
-                  <li><strong>.annot files:</strong> Binary annotation files with region labels</li>
-                  <li><strong>.json files:</strong> JSON annotation files with region definitions</li>
+                  <li>
+                    <strong>.asc files:</strong> ASCII brain surface files
+                    (lh.asc for left, rh.asc for right)
+                  </li>
+                  <li>
+                    <strong>.annot files:</strong> Binary annotation files with
+                    region labels
+                  </li>
+                  <li>
+                    <strong>.json files:</strong> JSON annotation files with
+                    region definitions
+                  </li>
                 </ul>
               </div>
             </CardContent>
@@ -216,5 +246,5 @@ export default function BrainDemoClient() {
         )}
       </div>
     </div>
-  );
-} 
+  )
+}

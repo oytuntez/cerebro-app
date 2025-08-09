@@ -18,10 +18,26 @@ export async function parseAnnotationFile(data: Uint8Array): Promise<BrainAnnota
           // Handle array format
           regionData.forEach((region: any, index: number) => {
             if (region && region.name) {
+              let color: [number, number, number];
+              
+              // Handle both object {r, g, b} and array [r, g, b] color formats
+              if (region.color) {
+                if (Array.isArray(region.color)) {
+                  color = region.color;
+                } else if (typeof region.color === 'object' && 'r' in region.color) {
+                  // Convert from {r, g, b} format - values are already in 0-255 range
+                  color = [region.color.r, region.color.g, region.color.b];
+                } else {
+                  color = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+                }
+              } else {
+                color = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+              }
+              
               regions[index] = {
                 id: region.id || index,
                 name: region.name,
-                color: region.color || [Math.random(), Math.random(), Math.random()]
+                color
               };
             }
           });
@@ -30,10 +46,26 @@ export async function parseAnnotationFile(data: Uint8Array): Promise<BrainAnnota
           Object.entries(regionData).forEach(([key, region]: [string, any]) => {
             if (region && typeof region === 'object') {
               const id = parseInt(key) || region.id || 0;
+              let color: [number, number, number];
+              
+              // Handle both object {r, g, b} and array [r, g, b] color formats
+              if (region.color) {
+                if (Array.isArray(region.color)) {
+                  color = region.color;
+                } else if (typeof region.color === 'object' && 'r' in region.color) {
+                  // Convert from {r, g, b} format - values are already in 0-255 range
+                  color = [region.color.r, region.color.g, region.color.b];
+                } else {
+                  color = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+                }
+              } else {
+                color = [Math.random() * 255, Math.random() * 255, Math.random() * 255];
+              }
+              
               regions[id] = {
                 id,
                 name: region.name || `Region ${id}`,
-                color: region.color || [Math.random(), Math.random(), Math.random()]
+                color
               };
             }
           });
@@ -41,7 +73,7 @@ export async function parseAnnotationFile(data: Uint8Array): Promise<BrainAnnota
       }
       
       return {
-        vertices: jsonData.vertices || [],
+        vertices: jsonData.vertices || jsonData.labels || [],
         regions
       };
     }
@@ -78,9 +110,9 @@ function parseBinaryAnnotation(data: Uint8Array): BrainAnnotation {
         id: label,
         name: `Region ${label}`,
         color: [
-          Math.random(),
-          Math.random(), 
-          Math.random()
+          Math.random() * 255,
+          Math.random() * 255, 
+          Math.random() * 255
         ]
       };
     }

@@ -12,7 +12,10 @@ export default function UploadPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <Title translate="no">Upload MRI Scan</Title>
-          <Description translate="no">Upload your brain MRI scan in NIfTI format (.nii or .nii.gz) for analysis</Description>
+          <Description translate="no">
+            Upload your brain MRI scan in NIfTI format (.nii or .nii.gz) for
+            analysis
+          </Description>
         </div>
       </div>
       <Separator />
